@@ -239,12 +239,37 @@
     transition:border-color .3s ease, box-shadow .3s ease, background-color .45s ease, color .45s ease;
   }
   .post-item:hover{border-color:var(--ink)}
-  .post-item__media{overflow:hidden;background:var(--wash)}
+  .post-item__media{overflow:hidden;background:var(--wash);border-radius:12px}
+  .group-cover{
+    position:relative;width:100%;aspect-ratio:16/8;
+    display:flex;align-items:center;gap:clamp(16px,3vw,32px);
+    padding:0 clamp(18px,4vw,36px);
+    background:#1a1a1c;
+  }
+  .group-cover__bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .group-cover::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(90deg,rgba(8,8,10,.85) 0%,rgba(8,8,10,.55) 46%,rgba(8,8,10,.18) 100%);
+  }
+  .group-cover__info{position:relative;z-index:1;flex:1;min-width:0;display:flex;flex-direction:column;gap:10px}
+  .group-cover__name{
+    font-family:var(--serif);font-weight:900;color:#fff;
+    font-size:clamp(20px,3.2vw,34px);line-height:1.25;letter-spacing:.04em;
+    text-shadow:0 2px 14px rgba(0,0,0,.55);
+  }
+  .group-cover__tip{font-size:12px;letter-spacing:.16em;color:rgba(255,255,255,.8)}
+  .group-cover__qr{
+    position:relative;z-index:1;flex:none;
+    width:clamp(92px,18vw,150px);aspect-ratio:1/1;
+    background:#fff;padding:8px;border-radius:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,.5);
+  }
+  .group-cover__qr img{width:100%;height:100%;object-fit:contain}
   .post-item__media img{
     width:100%;aspect-ratio:16/8;object-fit:cover;
     transition:transform .5s ease;
   }
-  .post-item:hover .post-item__media img{transform:scale(1.03)}
+  .post-item:hover .post-item__media > img{transform:scale(1.03)}
   .post-item__body{padding:24px 26px 22px;display:flex;flex-direction:column;gap:12px}
   .post-item__meta{
     display:flex;align-items:center;gap:14px;
@@ -285,7 +310,25 @@
     margin-top:20px;font-size:13px;color:var(--gray);letter-spacing:.14em;
   }
   .post-cover{margin:0 auto 48px;max-width:960px;padding:0 28px}
-  .post-cover img{width:100%;height:auto;border:1px solid var(--line)}
+  .post-cover img{width:100%;height:auto;border:1px solid var(--line);border-radius:14px}
+  .group-card{max-width:960px;margin:0 auto 40px;padding:0 28px}
+  .group-card__inner{
+    border:1px solid var(--ink);background:var(--wash);
+    padding:28px;display:flex;align-items:center;gap:28px;
+  }
+  .group-card__info{flex:1;min-width:0;display:flex;flex-direction:column;gap:14px;align-items:flex-start}
+  .group-card__label{font-size:12px;color:var(--gray);letter-spacing:.18em}
+  .group-card__number{
+    font-family:var(--serif);font-weight:900;
+    font-size:clamp(30px,5vw,46px);letter-spacing:.06em;line-height:1.2;
+    background:var(--ink);color:var(--paper);padding:8px 18px;
+  }
+  .group-card__tip{font-size:13px;color:var(--gray)}
+  .group-card__qr{
+    width:150px;height:150px;flex:none;
+    background:#ffffff;border:1px solid var(--line);padding:8px;
+  }
+  .group-card__qr img{width:100%;height:100%;object-fit:contain}
   .post-body{
     max-width:var(--measure);margin:0 auto;padding:0 28px 24px;
     font-family:var(--serif);font-size:17.5px;line-height:2.05;color:var(--ink-soft);
@@ -360,6 +403,8 @@
     .post-nav{grid-template-columns:1fr}
     .post-nav a:first-child{border-right:none;border-bottom:1px solid var(--ink)}
     .post-body{font-size:16.5px}
+    .group-card__inner{flex-direction:column;align-items:flex-start;padding:24px}
+    .group-card__qr{width:100%;height:auto;aspect-ratio:1/1}
   }
   @media (max-width:400px){
     .hero__sub{letter-spacing:.12em}
@@ -486,6 +531,26 @@
         "在这里，我打算写一些慢一点的东西：一些观察，一些想法，一些没有答案的问题。它们不需要讨任何人喜欢，只需要诚实。如果你路过，欢迎随便看看。",
         "就从这一篇开始吧。"
       ]
+    },
+    {
+      id: 2,
+      title: "加入交流群 · 阿尔卑斯要塞",
+      date: "2026.08.27",
+      tag: "公告",
+      image: "https://aka.doubaocdn.com/s/JoD8ecbQlX",
+      alt: "QQ 群「脆香米の阿尔卑斯要塞」二维码，群号 1098616164",
+      excerpt: "建了个 QQ 群「脆香米の阿尔卑斯要塞」，群号 1098616164。想交流的，扫码或复制群号进来聊。",
+      group: {
+        name: "脆香米の阿尔卑斯要塞",
+        number: "1098616164",
+        qrcode: "https://aka.doubaocdn.com/s/JoD8ecbQlX"
+      },
+      content: [
+        "建了一个 QQ 群，名字叫「脆香米の阿尔卑斯要塞」。想找个地方，把散落各处、聊得来的人聚在一起。",
+        "无论是想交流游戏、讨论卡组，还是只是路过想找个地方落脚，都欢迎。群号在这里，写得大一点：",
+        "也可以直接扫下面的二维码，一步进群。",
+        "群里见。"
+      ]
     }
   ];
 
@@ -530,7 +595,16 @@
       var minutes = Math.max(1, Math.round(wc / 300));
       return (
         '<article class="post-item" data-id="' + post.id + '" tabindex="0" role="link" aria-label="阅读：' + esc(post.title) + '">' +
-          '<div class="post-item__media"><img src="' + post.image + '" alt="' + esc(post.alt) + '" loading="lazy"></div>' +
+          (post.group ?
+            '<div class="post-item__media"><div class="group-cover">' +
+              '<img class="group-cover__bg" src="' + post.image + '" alt="" aria-hidden="true">' +
+              '<div class="group-cover__info">' +
+                '<span class="group-cover__name">' + esc(post.group.name) + '</span>' +
+                '<span class="group-cover__tip">QQ 群 · ' + esc(post.group.number) + '</span>' +
+              '</div>' +
+              '<div class="group-cover__qr"><img src="' + post.group.qrcode + '" alt="群二维码，扫码加入"></div>' +
+            '</div></div>'
+            : '<div class="post-item__media"><img src="' + post.image + '" alt="' + esc(post.alt) + '" loading="lazy"></div>') +
           '<div class="post-item__body">' +
             '<div class="post-item__meta"><time>' + post.date + '</time><span class="post-item__tag">' + esc(post.tag) + '</span></div>' +
             '<h3 class="post-item__title">' + esc(post.title) + '</h3>' +
@@ -595,7 +669,25 @@
         '<h1 class="post-header__title">' + esc(post.title) + '</h1>' +
         '<div class="post-header__meta">' + formatDate(post.date) + ' · 脆香米</div>' +
       '</div>' +
-      '<div class="post-cover"><img src="' + post.image + '" alt="' + esc(post.alt) + '"></div>' +
+      (post.group ?
+        '<div class="post-cover"><div class="group-cover">' +
+          '<img class="group-cover__bg" src="' + post.image + '" alt="" aria-hidden="true">' +
+          '<div class="group-cover__info">' +
+            '<span class="group-cover__name">' + esc(post.group.name) + '</span>' +
+            '<span class="group-cover__tip">QQ 群 · ' + esc(post.group.number) + '</span>' +
+          '</div>' +
+          '<div class="group-cover__qr"><img src="' + post.group.qrcode + '" alt="群二维码，扫码加入"></div>' +
+        '</div></div>'
+        : '<div class="post-cover"><img src="' + post.image + '" alt="' + esc(post.alt) + '"></div>') +
+      (post.group ?
+        '<div class="group-card"><div class="group-card__inner">' +
+          '<div class="group-card__info">' +
+            '<span class="group-card__label">QQ 交流群 · ' + esc(post.group.name) + '</span>' +
+            '<span class="group-card__number">' + esc(post.group.number) + '</span>' +
+            '<span class="group-card__tip">扫码或复制群号，进群一起聊</span>' +
+          '</div>' +
+          '<div class="group-card__qr"><img src="' + post.group.qrcode + '" alt="QQ 群二维码，群号 ' + esc(post.group.number) + '"></div>' +
+        '</div></div>' : '') +
       '<div class="post-body">' + paras + '</div>' +
       '<div class="post-end"><span class="post-end__line"></span><span class="post-end__sign">— 脆香米</span><span class="post-end__line"></span></div>' +
       '<nav class="post-nav" aria-label="文章切换">' +
