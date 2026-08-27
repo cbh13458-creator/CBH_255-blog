@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>脆香米 · 一个写字的地方</title>
+<meta name="description" content="脆香米——一个个人博客，安静写字的地方。">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
+<style>
+  :root{
+    color-scheme:light;
+    --ink:#111111;
+    --ink-soft:#3a3a3a;
+    --gray:#777777;
+    --gray-light:#a8a8a8;
+    --line:#e4e4e4;
+    --paper:#ffffff;
+    --wash:#f6f6f6;
+    --serif:"Noto Serif SC","Songti SC","SimSun","Source Han Serif SC",serif;
+    --sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+    --header-h:64px;
+    --maxw:1120px;
+    --measure:680px;
+  }
+  html[data-theme="dark"]{
+    color-scheme:dark;
+    --ink:#f2f2f2;
+    --ink-soft:#c8c8c8;
+    --gray:#999999;
+    --gray-light:#5f5f5f;
+    --line:#2f2f2f;
+    --paper:#0d0d0d;
+    --wash:#171717;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--sans);
+    color:var(--ink);
+    background:var(--paper);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* 主题切换时的平滑颜色过渡 */
+  body, body *{
+    transition: background-color .45s ease, color .45s ease, border-color .45s ease;
+  }
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  ul{list-style:none}
+
+  /* ===== 顶部导航 ===== */
+  .site-header{
+    position:sticky;top:0;z-index:50;
+    height:var(--header-h);
+    background:var(--paper);
+    border-bottom:1px solid var(--ink);
+    display:flex;align-items:center;
+  }
+  .site-header__inner{
+    width:100%;max-width:var(--maxw);
+    margin:0 auto;padding:0 28px;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;
+  }
+  .brand{display:flex;align-items:center;gap:12px}
+  .avatar{
+    flex:none;border-radius:50%;object-fit:cover;
+    background:var(--wash);border:1px solid var(--line);
+  }
+  .avatar--xs{width:26px;height:26px}
+  .avatar--sm{width:34px;height:34px}
+  .avatar--md{width:46px;height:46px}
+  .avatar--lg{width:92px;height:92px;border-width:2px}
+  .brand__name{
+    font-family:var(--serif);font-weight:900;font-size:19px;
+    letter-spacing:.06em;
+  }
+  .site-nav{display:flex;align-items:center;gap:8px}
+  .site-nav a{
+    display:inline-flex;align-items:center;justify-content:center;
+    min-height:44px;padding:0 16px;
+    font-size:14px;font-weight:500;letter-spacing:.08em;
+    color:var(--ink-soft);
+    position:relative;
+    transition:color .25s, background-color .45s ease, border-color .45s ease;
+  }
+  .site-nav a::after{
+    content:"";position:absolute;left:16px;right:16px;bottom:6px;
+    height:1px;background:var(--ink);
+    transform:scaleX(0);transform-origin:left;
+    transition:transform .25s ease;
+  }
+  .site-nav a:hover{color:var(--ink)}
+  .site-nav a:hover::after{transform:scaleX(1)}
+  .site-nav a.is-active{color:var(--ink)}
+  .site-nav a.is-active::after{transform:scaleX(1)}
+
+  .header-actions{display:flex;align-items:center;gap:8px}
+
+  /* 白天/黑夜切换按钮 */
+  .theme-toggle{
+    width:44px;height:44px;flex:none;
+    position:relative;display:grid;place-items:center;
+    background:var(--wash);border:1px solid var(--line);border-radius:50%;
+    color:var(--ink);cursor:pointer;
+  }
+  .theme-toggle:hover{border-color:var(--ink)}
+  .theme-toggle svg{
+    position:absolute;
+    transition:opacity .5s ease, transform .55s cubic-bezier(.4,0,.2,1);
+  }
+  .theme-toggle .icon-sun{opacity:1;transform:rotate(0deg) scale(1)}
+  .theme-toggle .icon-moon{opacity:0;transform:rotate(90deg) scale(.3)}
+  html[data-theme="dark"] .theme-toggle .icon-sun{opacity:0;transform:rotate(-90deg) scale(.3)}
+  html[data-theme="dark"] .theme-toggle .icon-moon{opacity:1;transform:rotate(0deg) scale(1)}
+
+  /* 主题切换时的圆形扩散动画层 */
+  .theme-ripple{
+    position:fixed;z-index:99;pointer-events:none;
+    width:4px;height:4px;margin:-2px 0 0 -2px;border-radius:50%;
+    transform:scale(0);
+    transition:transform .65s cubic-bezier(.3,0,.1,1);
+  }
+  .theme-ripple.is-dark{background:#0d0d0d}
+  .theme-ripple.is-light{background:#ffffff}
+
+  .hamburger{
+    display:none;
+    width:44px;height:44px;
+    background:none;border:1px solid transparent;border-radius:4px;
+    cursor:pointer;align-items:center;justify-content:center;
+  }
+  .hamburger span{
+    display:block;width:22px;height:1.6px;background:var(--ink);
+    position:relative;transition:background .2s;
+  }
+  .hamburger span::before,.hamburger span::after{
+    content:"";position:absolute;left:0;width:22px;height:1.6px;background:var(--ink);
+    transition:transform .25s ease,top .25s ease;
+  }
+  .hamburger span::before{top:-7px}
+  .hamburger span::after{top:7px}
+  .hamburger.is-open span{background:transparent}
+  .hamburger.is-open span::before{top:0;transform:rotate(45deg)}
+  .hamburger.is-open span::after{top:0;transform:rotate(-45deg)}
+
+  .mobile-menu{
+    position:fixed;inset:0;z-index:40;
+    background:var(--paper);
+    display:flex;flex-direction:column;align-items:flex-start;justify-content:center;
+    padding:0 32px;
+    opacity:0;visibility:hidden;pointer-events:none;
+    transition:opacity .25s ease,visibility .25s ease;
+  }
+  .mobile-menu.is-open{opacity:1;visibility:visible;pointer-events:auto}
+  .mobile-menu a{
+    display:flex;align-items:center;min-height:56px;
+    font-family:var(--serif);font-weight:700;font-size:26px;
+    border-bottom:1px solid var(--line);
+    width:100%;margin-bottom:4px;
+  }
+  .mobile-menu a .idx{font-family:var(--sans);font-size:13px;color:var(--gray);margin-right:14px;font-weight:400}
+
+  /* ===== 主容器 ===== */
+  .page{width:100%}
+  .view{display:none}
+  .view.is-active{display:block;animation:fade .35s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+
+  /* ===== Hero ===== */
+  .hero{
+    padding:96px 0 72px;
+    display:flex;flex-direction:column;align-items:center;text-align:center;
+  }
+  .hero .avatar{margin-bottom:38px;box-shadow:0 0 0 6px var(--paper),0 0 0 7px var(--ink);transition:box-shadow .45s ease}
+  .hero__title{
+    font-family:var(--serif);font-weight:900;
+    font-size:clamp(56px,11vw,108px);
+    letter-spacing:.04em;line-height:1.05;
+  }
+  .hero__sub{
+    margin-top:22px;
+    font-size:clamp(15px,2.4vw,18px);
+    color:var(--gray);letter-spacing:.2em;
+  }
+  .hero__rule{
+    width:56px;height:1px;background:var(--ink);margin-top:44px;
+  }
+  .hero__note{
+    margin-top:18px;font-size:12px;color:var(--gray-light);letter-spacing:.12em;
+  }
+
+  /* ===== 文章列表 ===== */
+  .section-head{
+    display:flex;align-items:baseline;gap:14px;
+    padding-bottom:14px;border-bottom:2px solid var(--ink);
+    margin-bottom:36px;
+  }
+  .section-head__title{
+    font-family:var(--serif);font-weight:700;font-size:22px;letter-spacing:.1em;
+  }
+  .section-head__count{font-size:12px;color:var(--gray);letter-spacing:.1em}
+
+  .post-card{
+    display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);
+    gap:0;margin-bottom:40px;
+    border:1px solid var(--line);
+    cursor:pointer;
+    transition:border-color .3s ease, box-shadow .3s ease, background-color .45s ease, color .45s ease;
+  }
+  .post-card:hover{border-color:var(--ink)}
+  .post-card__media{overflow:hidden;background:var(--wash)}
+  .post-card__media img{
+    width:100%;height:100%;object-fit:cover;
+    transition:transform .5s ease;
+  }
+  .post-card:hover .post-card__media img{transform:scale(1.03)}
+  .post-card__body{
+    padding:32px 34px;
+    display:flex;flex-direction:column;justify-content:center;gap:12px;
+  }
+  .post-card__meta{
+    display:flex;align-items:center;justify-content:space-between;
+    font-size:12px;color:var(--gray);letter-spacing:.12em;
+  }
+  .post-card__index{font-family:var(--serif);font-size:13px}
+  .post-card__title{
+    font-family:var(--serif);font-weight:700;font-size:26px;line-height:1.35;
+  }
+  .post-card__excerpt{
+    font-size:14.5px;color:var(--ink-soft);
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  }
+  .post-card__more{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:13px;font-weight:500;letter-spacing:.14em;margin-top:6px;
+  }
+  .post-card__more svg{transition:transform .25s ease}
+  .post-card:hover .post-card__more svg{transform:translateX(4px)}
+
+  /* ===== 文章详情 ===== */
+  .post-header{padding:64px 0 40px;text-align:center}
+  .post-header__tag{
+    display:inline-block;font-size:12px;color:var(--gray);letter-spacing:.2em;
+    border:1px solid var(--line);padding:4px 14px;margin-bottom:24px;
+  }
+  .post-header__title{
+    font-family:var(--serif);font-weight:900;
+    font-size:clamp(30px,5vw,46px);line-height:1.3;
+    max-width:760px;margin:0 auto;
+  }
+  .post-header__meta{
+    margin-top:20px;font-size:13px;color:var(--gray);letter-spacing:.14em;
+  }
+  .post-cover{margin:0 auto 48px;max-width:960px;padding:0 28px}
+  .post-cover img{width:100%;height:auto;border:1px solid var(--line)}
+  .post-body{
+    max-width:var(--measure);margin:0 auto;padding:0 28px 24px;
+    font-family:var(--serif);font-size:17.5px;line-height:2.05;color:var(--ink-soft);
+  }
+  .post-body p{margin-bottom:1.6em}
+  .post-body p:first-child::first-letter{
+    font-size:3em;float:left;line-height:.9;padding-right:12px;color:var(--ink);
+    font-weight:700;
+  }
+  .post-end{
+    max-width:var(--measure);margin:0 auto;padding:48px 28px 80px;
+    display:flex;align-items:center;gap:16px;
+  }
+  .post-end__line{flex:1;height:1px;background:var(--line)}
+  .post-end__sign{font-family:var(--serif);font-weight:700;font-size:15px;letter-spacing:.2em;color:var(--gray)}
+  .post-nav{
+    border-top:1px solid var(--ink);
+    display:grid;grid-template-columns:1fr 1fr;max-width:var(--maxw);margin:0 auto;
+  }
+  .post-nav a{
+    min-height:92px;display:flex;flex-direction:column;justify-content:center;gap:6px;
+    padding:20px 28px;
+  }
+  .post-nav a:first-child{border-right:1px solid var(--ink);align-items:flex-start;text-align:left}
+  .post-nav a:last-child{align-items:flex-end;text-align:right}
+  .post-nav a:hover{background:var(--wash)}
+  .post-nav__label{font-size:12px;color:var(--gray);letter-spacing:.16em}
+  .post-nav__title{font-family:var(--serif);font-weight:600;font-size:16px}
+  .post-nav__title.is-disabled{color:var(--gray-light)}
+
+  /* 阅读进度 */
+  .progress{
+    position:fixed;top:0;left:0;height:2px;width:0;background:var(--ink);z-index:60;
+    transition:width .1s linear;
+  }
+
+  /* ===== 关于页 ===== */
+  .about{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:56px;padding:80px 0 100px;align-items:start}
+  .about__media img{border:1px solid var(--line)}
+  .about__head{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+  .about__head .avatar{width:48px;height:48px}
+  .about__title{font-family:var(--serif);font-weight:900;font-size:30px;letter-spacing:.06em}
+  .about__body{font-family:var(--serif);font-size:16.5px;line-height:2.05;color:var(--ink-soft)}
+  .about__body p{margin-bottom:1.5em}
+  .about__facts{
+    margin-top:34px;border-top:1px solid var(--line);padding-top:22px;
+    display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--gray);letter-spacing:.08em;
+  }
+  .about__facts b{color:var(--ink);font-weight:600}
+
+  /* ===== 页脚 ===== */
+  .site-footer{border-top:1px solid var(--ink);margin-top:40px}
+  .site-footer__inner{
+    max-width:var(--maxw);margin:0 auto;padding:28px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    font-size:12.5px;color:var(--gray);letter-spacing:.1em;
+  }
+  .site-footer .avatar{width:26px;height:26px}
+
+  /* ===== 响应式 ===== */
+  @media (max-width:768px){
+    .site-header__inner,.wrap{padding-left:20px;padding-right:20px}
+    .site-nav{display:none}
+    .hamburger{display:flex}
+    .hero{padding:72px 0 56px}
+    .post-card{grid-template-columns:1fr}
+    .post-card__media{aspect-ratio:3/2}
+    .post-card__body{padding:24px 22px}
+    .post-card__title{font-size:21px}
+    .about{grid-template-columns:1fr;gap:36px;padding:56px 0 72px}
+    .about__media{order:-1}
+    .post-nav{grid-template-columns:1fr}
+    .post-nav a:first-child{border-right:none;border-bottom:1px solid var(--ink)}
+    .post-body{font-size:16.5px}
+  }
+  @media (max-width:400px){
+    .hero__sub{letter-spacing:.12em}
+  }
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="brand" href="#/home">
+      <img class="avatar avatar--sm" src="https://aka.doubaocdn.com/s/nKDhFpndRW" alt="脆香米的头像">
+      <span class="brand__name">脆香米</span>
+    </a>
+    <div class="header-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="切换白天与黑夜模式">
+        <svg class="icon-sun" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.3M12 19.1v2.3M2.6 12h2.3M19.1 12h2.3M5 5l1.6 1.6M17.4 17.4 19 19M19 5l-1.6 1.6M6.6 17.4 5 19"/></svg>
+        <svg class="icon-moon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.6A8.6 8.6 0 0 1 9.4 4a8.6 8.6 0 1 0 10.6 10.6z"/></svg>
+      </button>
+      <nav class="site-nav" aria-label="主导航">
+        <a href="#/home" data-nav="home">首页</a>
+        <a href="#/about" data-nav="about">关于</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="打开菜单"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#/home"><span class="idx">01</span>首页</a>
+  <a href="#/about"><span class="idx">02</span>关于</a>
+</div>
+
+<main class="page">
+  <!-- ===== 首页 ===== -->
+  <section class="view" data-route="home">
+    <div class="wrap">
+      <div class="hero">
+        <img class="avatar avatar--lg" src="https://aka.doubaocdn.com/s/nKDhFpndRW" alt="脆香米的头像">
+        <h1 class="hero__title">脆香米</h1>
+        <p class="hero__sub">一个写字的地方。</p>
+        <div class="hero__rule"></div>
+        <p class="hero__note" id="heroNote"></p>
+      </div>
+      <div class="section-head">
+        <h2 class="section-head__title">文章</h2>
+        <span class="section-head__count" id="postCount"></span>
+      </div>
+      <div id="postList"></div>
+    </div>
+  </section>
+
+  <!-- ===== 文章详情 ===== -->
+  <section class="view" data-route="post">
+    <div id="postView"></div>
+  </section>
+
+  <!-- ===== 关于 ===== -->
+  <section class="view" data-route="about">
+    <div class="wrap">
+      <div class="about">
+        <div class="about__media">
+          <img src="https://aka.doubaocdn.com/s/UUDo8obcxu" alt="一张书桌的黑白照片，摊开的书与茶杯">
+        </div>
+        <div>
+          <div class="about__head">
+            <img class="avatar avatar--md" src="https://aka.doubaocdn.com/s/nKDhFpndRW" alt="脆香米的头像">
+            <h2 class="about__title">关于这个网站</h2>
+          </div>
+          <div class="about__body" id="aboutBody"></div>
+          <div class="about__facts">
+            <span><b>名字</b>　脆香米，只是一个名字，不是零食</span>
+            <span><b>内容</b>　随笔、观察、没有答案的问题</span>
+            <span><b>频率</b>　想写的时候写，不想写的时候不写</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <span style="display:inline-flex;align-items:center;gap:10px"><img class="avatar avatar--xs" src="https://aka.doubaocdn.com/s/nKDhFpndRW" alt="脆香米的头像">脆香米 · 2026</span>
+    <span>在黑白之间，写一点自己的东西。</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ===== 数据 ===== */
+  var posts = [
+    {
+      id: 1,
+      title: "第一篇文章",
+      date: "2026.08.21",
+      tag: "开篇",
+      image: "https://aka.doubaocdn.com/s/46UV4T0VFb",
+      alt: "一张书桌的黑白照片，摊开的笔记本与钢笔",
+      excerpt: "这里原本只是一块空地。和大多数人一样，我在很多地方留下过只言片语——聊天框、备忘录、社交动态，它们像随手写下的便签，贴在时间的墙上，过几天就忘了翻看。",
+      content: [
+        "这里原本只是一块空地。和大多数人一样，我在很多地方留下过只言片语——聊天框、备忘录、社交动态，它们像随手写下的便签，贴在时间的墙上，过几天就忘了翻看。后来我想，也许该有一个只属于自己的地方。",
+        "这个网站就是这么来的。没有复杂的版式，只有黑白两色，像一张干净的白纸。我把它叫做「脆香米」——这是我的名字，一个普通的名字，也是一个想被认真对待的名字。",
+        "在这里，我打算写一些慢一点的东西：一些观察，一些想法，一些没有答案的问题。它们不需要讨任何人喜欢，只需要诚实。如果你路过，欢迎随便看看。",
+        "就从这一篇开始吧。"
+      ]
+    }
+  ];
+
+  var aboutText = [
+    "脆香米是我的名字。它不是零食，是一个普普通通、但对我来说很重要的人的名字。",
+    "这个网站是我的个人博客，一个安静写字的地方。没有广告，没有推荐算法，也没有十万加的压力。这里只有文字、图片，和我愿意分享的日常与思考。",
+    "我希望能在这里留住一些真诚的东西——写给自己看，也写给你看。如果你偶然路过，读到某一行觉得有些共鸣，那大概就是写字的意义了。"
+  ];
+
+  /* ===== DOM 引用 ===== */
+  var postList = document.getElementById("postList");
+  var postView = document.getElementById("postView");
+  var aboutBody = document.getElementById("aboutBody");
+  var heroNote = document.getElementById("heroNote");
+  var postCount = document.getElementById("postCount");
+  var progress = document.getElementById("progress");
+  var hamburger = document.getElementById("hamburger");
+  var mobileMenu = document.getElementById("mobileMenu");
+  var themeToggle = document.getElementById("themeToggle");
+
+  /* ===== 工具 ===== */
+  function esc(s){
+    return String(s).replace(/[&<>"']/g,function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+    });
+  }
+  function formatDate(d){
+    var p = d.split(".").map(function(n){return parseInt(n,10);});
+    return p[0] + " 年 " + p[1] + " 月 " + p[2] + " 日";
+  }
+
+  /* ===== 渲染：首页 ===== */
+  function renderHome(){
+    heroNote.textContent = "已写 " + posts.length + " 篇 · 最近更新于 " + formatDate(posts[0].date);
+    postCount.textContent = posts.length + " 篇";
+    postList.innerHTML = posts.map(function(post, i){
+      var idx = (i + 1 < 10 ? "0" : "") + (i + 1);
+      return (
+        '<article class="post-card" data-id="' + post.id + '" tabindex="0" role="link" aria-label="阅读：' + esc(post.title) + '">' +
+          '<div class="post-card__media"><img src="' + post.image + '" alt="' + esc(post.alt) + '" loading="lazy"></div>' +
+          '<div class="post-card__body">' +
+            '<div class="post-card__meta"><time>' + post.date + '</time><span class="post-card__index">' + idx + '</span></div>' +
+            '<h3 class="post-card__title">' + esc(post.title) + '</h3>' +
+            '<p class="post-card__excerpt">' + esc(post.excerpt) + '</p>' +
+            '<span class="post-card__more">阅读' +
+              '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>' +
+            '</span>' +
+          '</div>' +
+        '</article>'
+      );
+    }).join("");
+
+    Array.prototype.forEach.call(postList.querySelectorAll(".post-card"), function(card){
+      function open(){
+        location.hash = "#/post?id=" + card.getAttribute("data-id");
+      }
+      card.addEventListener("click", open);
+      card.addEventListener("keydown", function(e){
+        if(e.key === "Enter" || e.key === " "){e.preventDefault();open();}
+      });
+    });
+  }
+
+  /* ===== 渲染：文章详情 ===== */
+  function renderPost(params){
+    var id = parseInt(params.get("id"), 10);
+    var post = null;
+    for(var i=0;i<posts.length;i++){ if(posts[i].id === id){ post = posts[i]; break; } }
+    if(!post){ location.hash = "#/home"; return; }
+
+    var idx = posts.indexOf(post);
+    var prev = posts[idx - 1] || null;
+    var next = posts[idx + 1] || null;
+
+    var paras = post.content.map(function(p){
+      return "<p>" + esc(p) + "</p>";
+    }).join("");
+
+    postView.innerHTML =
+      '<div class="post-header">' +
+        '<span class="post-header__tag">' + esc(post.tag) + '</span>' +
+        '<h1 class="post-header__title">' + esc(post.title) + '</h1>' +
+        '<div class="post-header__meta">' + formatDate(post.date) + ' · 脆香米</div>' +
+      '</div>' +
+      '<div class="post-cover"><img src="' + post.image + '" alt="' + esc(post.alt) + '"></div>' +
+      '<div class="post-body">' + paras + '</div>' +
+      '<div class="post-end"><span class="post-end__line"></span><span class="post-end__sign">— 脆香米</span><span class="post-end__line"></span></div>' +
+      '<nav class="post-nav" aria-label="文章切换">' +
+        (prev
+          ? '<a href="#/post?id=' + prev.id + '"><span class="post-nav__label">上一篇</span><span class="post-nav__title">' + esc(prev.title) + '</span></a>'
+          : '<a href="#/home" style="border-right:1px solid var(--ink)"><span class="post-nav__label">回到首页</span><span class="post-nav__title">浏览全部文章</span></a>') +
+        (next
+          ? '<a href="#/post?id=' + next.id + '"><span class="post-nav__label">下一篇</span><span class="post-nav__title">' + esc(next.title) + '</span></a>'
+          : '<a href="#/home"><span class="post-nav__label">已经到头了</span><span class="post-nav__title">回到首页</span></a>') +
+      '</nav>';
+  }
+
+  /* ===== 渲染：关于 ===== */
+  function renderAbout(){
+    aboutBody.innerHTML = aboutText.map(function(p){ return "<p>" + esc(p) + "</p>"; }).join("");
+  }
+
+  /* ===== 路由 ===== */
+  function parseHash(){
+    var raw = (location.hash || "").replace(/^#\/?/, "") || "home";
+    var parts = raw.split("?");
+    return {
+      path: parts[0] || "home",
+      params: new URLSearchParams(parts[1] || "")
+    };
+  }
+
+  var routeNames = { "home":"首页", "post":"文章", "about":"关于" };
+
+  function route(){
+    var r = parseHash();
+    var views = document.querySelectorAll(".view");
+    Array.prototype.forEach.call(views, function(v){ v.classList.remove("is-active"); });
+
+    var target = document.querySelector('.view[data-route="' + r.path + '"]') || document.querySelector('.view[data-route="home"]');
+    target.classList.add("is-active");
+
+    if(r.path === "post"){ renderPost(r.params); }
+    else if(r.path === "about"){ renderAbout(); }
+    else { renderHome(); }
+
+    document.title = "脆香米 · " + (routeNames[r.path] || "一个写字的地方");
+
+    // 高亮导航
+    var active = routeNames[r.path] || "首页";
+    Array.prototype.forEach.call(document.querySelectorAll(".site-nav a"), function(a){
+      a.classList.toggle("is-active", a.textContent === active);
+    });
+
+    closeMenu();
+    window.scrollTo(0, 0);
+    progress.style.width = "0px";
+  }
+
+  window.addEventListener("hashchange", route);
+
+  /* ===== 阅读进度 ===== */
+  function updateProgress(){
+    var h = document.documentElement;
+    var scrollTop = window.pageYOffset || h.scrollTop;
+    var max = h.scrollHeight - h.clientHeight;
+    var pct = max > 0 ? (scrollTop / max) * 100 : 0;
+    progress.style.width = pct + "%";
+  }
+  window.addEventListener("scroll", updateProgress, {passive:true});
+
+  /* ===== 移动端菜单 ===== */
+  function toggleMenu(){
+    var open = mobileMenu.classList.toggle("is-open");
+    hamburger.classList.toggle("is-open", open);
+    document.body.style.overflow = open ? "hidden" : "";
+  }
+  hamburger.addEventListener("click", toggleMenu);
+  Array.prototype.forEach.call(mobileMenu.querySelectorAll("a"), function(a){
+    a.addEventListener("click", closeMenu);
+  });
+  function closeMenu(){
+    mobileMenu.classList.remove("is-open");
+    hamburger.classList.remove("is-open");
+    document.body.style.overflow = "";
+  }
+
+  /* ===== 白天/黑夜主题切换 ===== */
+  function applyTheme(theme){
+    document.documentElement.setAttribute("data-theme", theme);
+    try{ localStorage.setItem("cuixiangmi-theme", theme); }catch(e){}
+  }
+  function toggleTheme(){
+    var root = document.documentElement;
+    var current = root.getAttribute("data-theme") === "dark" ? "dark" : "light";
+    var next = current === "dark" ? "light" : "dark";
+
+    // 从按钮位置向外扩散目标背景色，形成流畅的切换动画
+    var rect = themeToggle.getBoundingClientRect();
+    var cx = rect.left + rect.width / 2;
+    var cy = rect.top + rect.height / 2;
+    var maxR = Math.sqrt(
+      Math.pow(Math.max(cx, window.innerWidth - cx), 2) +
+      Math.pow(Math.max(cy, window.innerHeight - cy), 2)
+    );
+    var ripple = document.createElement("div");
+    ripple.className = "theme-ripple is-" + next;
+    ripple.style.left = cx + "px";
+    ripple.style.top = cy + "px";
+    document.body.appendChild(ripple);
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        ripple.style.transform = "scale(" + maxR + ")";
+      });
+    });
+    applyTheme(next);
+    setTimeout(function(){
+      if(ripple.parentNode){ ripple.parentNode.removeChild(ripple); }
+    }, 700);
+  }
+  themeToggle.addEventListener("click", toggleTheme);
+
+  /* ===== 启动 ===== */
+  var initialTheme = "dark";
+  try{
+    var savedTheme = localStorage.getItem("cuixiangmi-theme");
+    if(savedTheme === "light" || savedTheme === "dark"){ initialTheme = savedTheme; }
+  }catch(e){}
+  applyTheme(initialTheme);
+  route();
+})();
+</script>
+</body>
+</html>
