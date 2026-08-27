@@ -644,7 +644,7 @@
 
 <!-- ===== 刷新彩蛋：隐藏界面 ===== -->
 <div class="secret-layer" id="secretLayer" aria-hidden="true">
-  <video id="secretVideo" src="https://cbh13458-creator.github.io/CBH_255-blog/secret.mp4" muted playsinline preload="auto"></video>
+  <video id="secretVideo" src="https://cbh13458-creator.github.io/CBH_255-blog/secret.mp4" poster="https://cbh13458-creator.github.io/CBH_255-blog/secret-poster.jpg" muted playsinline preload="auto"></video>
   <audio id="secretAudio" src="https://cbh13458-creator.github.io/CBH_255-blog/secret.mp3" preload="auto"></audio>
 </div>
 
@@ -1013,7 +1013,8 @@
     if(!trigger){ return; }
     secretShown = true;
     secretLayer.classList.add("show");
-    // 画面：视频静音自动播放（手机端保证画面直接动起来）
+    // 强制加载并播放视频（避免加载慢黑屏）
+    try{ secretVideo.load(); }catch(e){}
     var p = secretVideo.play();
     if(p && p.catch){ p.catch(function(){}); }
     // 声音：直接尝试带声播放 MP3 —— 用户与该站点已有交互时，浏览器会直接放行
