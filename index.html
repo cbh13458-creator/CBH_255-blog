@@ -249,15 +249,15 @@
   .group-cover__bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .group-cover::after{
     content:"";position:absolute;inset:0;
-    background:linear-gradient(90deg,rgba(8,8,10,.85) 0%,rgba(8,8,10,.55) 46%,rgba(8,8,10,.18) 100%);
+    background:linear-gradient(90deg,rgba(8,8,10,.92) 0%,rgba(8,8,10,.72) 40%,rgba(8,8,10,.35) 100%);
   }
   .group-cover__info{position:relative;z-index:1;flex:1;min-width:0;display:flex;flex-direction:column;gap:10px}
   .group-cover__name{
     font-family:var(--serif);font-weight:900;color:#fff;
     font-size:clamp(20px,3.2vw,34px);line-height:1.25;letter-spacing:.04em;
-    text-shadow:0 2px 14px rgba(0,0,0,.55);
+    text-shadow:0 2px 8px rgba(0,0,0,.9),0 0 20px rgba(0,0,0,.6);
   }
-  .group-cover__tip{font-size:12px;letter-spacing:.16em;color:rgba(255,255,255,.8)}
+  .group-cover__tip{font-size:12px;letter-spacing:.16em;color:rgba(255,255,255,.85);text-shadow:0 1px 6px rgba(0,0,0,.8)}
   .group-cover__qr{
     position:relative;z-index:1;flex:none;
     width:clamp(92px,18vw,150px);aspect-ratio:1/1;
@@ -537,8 +537,8 @@
       title: "加入交流群 · 阿尔卑斯要塞",
       date: "2026.08.27",
       tag: "公告",
-      image: "https://aka.doubaocdn.com/s/JoD8ecbQlX",
-      alt: "QQ 群「脆香米の阿尔卑斯要塞」二维码，群号 1098616164",
+      image: "https://aka.doubaocdn.com/s/lOeZjJBurW",
+      alt: "QQ 群名片，脆香米の阿尔卑斯要塞",
       excerpt: "建了个 QQ 群「脆香米の阿尔卑斯要塞」，群号 1098616164。想交流的，扫码或复制群号进来聊。",
       group: {
         name: "脆香米の阿尔卑斯要塞",
@@ -669,16 +669,7 @@
         '<h1 class="post-header__title">' + esc(post.title) + '</h1>' +
         '<div class="post-header__meta">' + formatDate(post.date) + ' · 脆香米</div>' +
       '</div>' +
-      (post.group ?
-        '<div class="post-cover"><div class="group-cover">' +
-          '<img class="group-cover__bg" src="' + post.image + '" alt="" aria-hidden="true">' +
-          '<div class="group-cover__info">' +
-            '<span class="group-cover__name">' + esc(post.group.name) + '</span>' +
-            '<span class="group-cover__tip">QQ 群 · ' + esc(post.group.number) + '</span>' +
-          '</div>' +
-          '<div class="group-cover__qr"><img src="' + post.group.qrcode + '" alt="群二维码，扫码加入"></div>' +
-        '</div></div>'
-        : '<div class="post-cover"><img src="' + post.image + '" alt="' + esc(post.alt) + '"></div>') +
+      '<div class="post-cover"><img src="' + post.image + '" alt="' + esc(post.alt) + '"></div>' +
       (post.group ?
         '<div class="group-card"><div class="group-card__inner">' +
           '<div class="group-card__info">' +
