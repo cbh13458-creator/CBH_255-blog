@@ -988,13 +988,20 @@
     }catch(e){}
   }, {capture:true, once:true});
 
-  // 彩蛋出现后，若声音还没出来，任意点击都补上声音（兜底）
-  document.addEventListener("pointerdown", function(){
+  // 全屏任意位置按下 → 立即出声音（视频上、黑边上、任何地方都可以）
+  function playSecretSound(){
     if(!secretShown){ return; }
     if(secretAudio.paused){
-      secretAudio.play().catch(function(){});
+      var p = secretAudio.play();
+      if(p && p.catch){ p.catch(function(){}); }
     }
-  });
+  }
+  // 全屏层覆盖整个屏幕，点击任何位置都会落在这层上
+  secretLayer.addEventListener("pointerdown", playSecretSound);
+  secretLayer.addEventListener("touchstart", playSecretSound, {passive:true});
+  secretLayer.addEventListener("click", playSecretSound);
+  // 兜底：即使点在全屏层之外的角落也能出声
+  document.addEventListener("pointerdown", playSecretSound);
 
   function maybeShowSecret(){
     if(secretShown){ return; }
