@@ -523,6 +523,11 @@
   }
 
   /* ===== 刷新彩蛋 ===== */
+  @font-face{
+    font-family:'Cubic11';
+    src:url('cubic11.woff2') format('woff2');
+    font-display:swap;
+  }
   .secret-layer{
     position:fixed;inset:0;z-index:200;
     display:grid;place-items:center;
@@ -534,6 +539,26 @@
   .secret-layer video{
     width:100%;height:100%;object-fit:contain;
     background:#000;display:block;
+  }
+  /* 彩蛋触发前的过渡文字 */
+  .secret-intro{
+    position:fixed;inset:0;z-index:205;
+    background:#000;
+    display:none;
+    align-items:center;justify-content:center;
+    font-family:'Cubic11', monospace;
+    color:#fff;
+    font-size:30px;
+    letter-spacing:6px;
+    text-align:center;
+    padding:20px;
+  }
+  .secret-intro.show{display:flex}
+  .secret-intro.flash{animation:secretFlash .45s ease}
+  @keyframes secretFlash{
+    0%{background:#000;color:#fff}
+    50%{background:#fff;color:#000}
+    100%{background:#000;color:#fff}
   }
 </style>
 </head>
@@ -647,6 +672,9 @@
   <video id="secretVideo" src="https://cbh13458-creator.github.io/CBH_255-blog/secret.mp4" poster="https://cbh13458-creator.github.io/CBH_255-blog/secret-poster.jpg" muted playsinline preload="auto"></video>
   <audio id="secretAudio" src="https://cbh13458-creator.github.io/CBH_255-blog/secret.mp3" preload="auto"></audio>
 </div>
+
+<!-- ===== 彩蛋触发过渡：介入光与暗之间 ===== -->
+<div class="secret-intro" id="secretIntro" aria-hidden="true">介入光与暗之间</div>
 
 <script>
 (function(){
@@ -927,17 +955,11 @@
       });
     });
     applyTheme(next);
-    // 主题切换按钮累计点击10次 → 触发彩蛋
+    // 主题切换按钮累计点击10次 → 过渡文字+闪屏→彩蛋
     themeClicks++;
     if(themeClicks >= 10 && !secretShown){
       themeClicks = 0;
-      secretShown = true;
-      secretLayer.classList.add("show");
-      try{ secretVideo.load(); }catch(e){}
-      var vp = secretVideo.play();
-      if(vp && vp.catch){ vp.catch(function(){}); }
-      var ap = secretAudio.play();
-      if(ap && ap.catch){ ap.catch(function(){}); }
+      triggerSecretWithIntro();
     }
     setTimeout(function(){
       if(ripple.parentNode){ ripple.parentNode.removeChild(ripple); }
@@ -1015,6 +1037,25 @@
   secretLayer.addEventListener("click", playSecretSound);
   // 兜底：即使点在全屏层之外的角落也能出声
   document.addEventListener("pointerdown", playSecretSound);
+
+  // 连点10次主题按钮 → 过渡文字 + 闪屏 → 彩蛋
+  function triggerSecretWithIntro(){
+    secretShown = true;
+    var intro = document.getElementById("secretIntro");
+    intro.classList.add("show");
+    setTimeout(function(){
+      intro.classList.add("flash");
+      setTimeout(function(){
+        intro.classList.remove("show","flash");
+        secretLayer.classList.add("show");
+        try{ secretVideo.load(); }catch(e){}
+        var vp = secretVideo.play();
+        if(vp && vp.catch){ vp.catch(function(){}); }
+        var ap = secretAudio.play();
+        if(ap && ap.catch){ ap.catch(function(){}); }
+      }, 450);
+    }, 900);
+  }
 
   function maybeShowSecret(){
     if(secretShown){ return; }
