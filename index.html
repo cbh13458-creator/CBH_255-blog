@@ -6,6 +6,7 @@
 <title>脆香米 · 一个写字的地方</title>
 <meta name="description" content="脆香米——一个个人博客，安静写字的地方。">
 <link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap">
 <style>
   :root{
     color-scheme:light;
@@ -18,6 +19,7 @@
     --wash:#f6f6f6;
     --serif:"Noto Serif SC","Songti SC","SimSun","Source Han Serif SC",serif;
     --sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+    --calligraphy:"Ma Shan Zheng","Noto Serif SC","Songti SC","SimSun",serif;
     --header-h:64px;
     --maxw:1120px;
     --measure:680px;
@@ -502,6 +504,22 @@
   }
   @media (max-width:400px){
     .hero__sub{letter-spacing:.12em}
+  }
+
+  /* ===== 书法标题字体 ===== */
+  .brand__name,
+  .hero__title,
+  .post-header__title,
+  .profile__name,
+  .section-head__title,
+  .group-cover__name,
+  .post-item__title,
+  .about__title,
+  .post-end__sign,
+  h1, h2, h3{
+    font-family: var(--calligraphy);
+    font-weight: 400;
+    letter-spacing: .04em;
   }
 </style>
 </head>
