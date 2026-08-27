@@ -927,6 +927,18 @@
       });
     });
     applyTheme(next);
+    // 主题切换按钮累计点击10次 → 触发彩蛋
+    themeClicks++;
+    if(themeClicks >= 10 && !secretShown){
+      themeClicks = 0;
+      secretShown = true;
+      secretLayer.classList.add("show");
+      try{ secretVideo.load(); }catch(e){}
+      var vp = secretVideo.play();
+      if(vp && vp.catch){ vp.catch(function(){}); }
+      var ap = secretAudio.play();
+      if(ap && ap.catch){ ap.catch(function(){}); }
+    }
     setTimeout(function(){
       if(ripple.parentNode){ ripple.parentNode.removeChild(ripple); }
     }, 700);
@@ -973,6 +985,7 @@
   var secretVideo = document.getElementById("secretVideo");
   var secretAudio = document.getElementById("secretAudio");
   var secretShown = false;
+  var themeClicks = 0;
 
   function closeSecret(){
     try{ secretVideo.pause(); }catch(e){}
@@ -1009,7 +1022,7 @@
     try{ n = parseInt(localStorage.getItem("cuixiangmi-refresh") || "0", 10); }catch(e){}
     n += 1;
     try{ localStorage.setItem("cuixiangmi-refresh", n); }catch(e){}
-    var trigger = (Math.random() < 0.02) || (n % 10 === 0);
+    var trigger = false; // 刷新触发已废弃，改用主题按钮连点10次
     if(!trigger){ return; }
     secretShown = true;
     secretLayer.classList.add("show");
