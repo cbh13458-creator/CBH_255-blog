@@ -644,7 +644,8 @@
 
 <!-- ===== 刷新彩蛋：隐藏界面 ===== -->
 <div class="secret-layer" id="secretLayer" aria-hidden="true">
-  <video id="secretVideo" src="https://cbh13458-creator.github.io/CBH_255-blog/secret.mp4" preload="auto" playsinline></video>
+  <video id="secretVideo" src="https://cbh13458-creator.github.io/CBH_255-blog/secret.mp4" muted playsinline preload="auto"></video>
+  <audio id="secretAudio" src="https://cbh13458-creator.github.io/CBH_255-blog/secret.mp3" preload="auto"></audio>
 </div>
 
 <script>
@@ -970,22 +971,22 @@
   /* ===== 刷新彩蛋 ===== */
   var secretLayer = document.getElementById("secretLayer");
   var secretVideo = document.getElementById("secretVideo");
+  var secretAudio = document.getElementById("secretAudio");
   var secretShown = false;
   var soundUnlocked = false;
 
   function closeSecret(){
     try{ secretVideo.pause(); }catch(e){}
+    try{ secretAudio.pause(); }catch(e){}
     secretLayer.classList.remove("show");
   }
 
-  // 首次用户交互 → 立即开启声音
+  // 首次用户交互 → 播放提取的 MP3 音乐
   function unlockSound(){
     if(soundUnlocked){ return; }
     soundUnlocked = true;
-    secretVideo.muted = false;
-    if(secretVideo.paused){
-      secretVideo.play().catch(function(){});
-    }
+    var p = secretAudio.play();
+    if(p && p.catch){ p.catch(function(){}); }
   }
   document.addEventListener("pointerdown", unlockSound, {once:true});
   document.addEventListener("touchstart", unlockSound, {once:true});
@@ -1000,18 +1001,16 @@
     if(!trigger){ return; }
     secretShown = true;
     secretLayer.classList.add("show");
-    // 先尝试直接带声音播放；被浏览器拦截则先静音自动播放，等首次点击开声
+    // 画面：视频静音自动播放（手机端保证画面直接动起来）
     var p = secretVideo.play();
-    if(p && p.catch){
-      p.catch(function(){
-        secretVideo.muted = true;
-        secretVideo.play().catch(function(){});
-      });
-    }
+    if(p && p.catch){ p.catch(function(){}); }
   }
 
-  // 完整播完 → 自动关闭，回到博客
-  secretVideo.addEventListener("ended", closeSecret);
+  // 视频完整播完 → 停音乐、自动关闭，回到博客
+  secretVideo.addEventListener("ended", function(){
+    try{ secretAudio.pause(); }catch(e){}
+    closeSecret();
+  });
 
   maybeShowSecret();
 
