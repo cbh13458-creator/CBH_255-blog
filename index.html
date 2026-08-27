@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="dark">
+<html lang="zh-CN" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -172,26 +172,54 @@
 
   /* ===== Hero ===== */
   .hero{
-    padding:96px 0 72px;
+    padding:88px 0 64px;
     display:flex;flex-direction:column;align-items:center;text-align:center;
   }
-  .hero .avatar{margin-bottom:38px;box-shadow:0 0 0 6px var(--paper),0 0 0 7px var(--ink);transition:box-shadow .45s ease}
   .hero__title{
     font-family:var(--serif);font-weight:900;
     font-size:clamp(56px,11vw,108px);
     letter-spacing:.04em;line-height:1.05;
   }
   .hero__sub{
-    margin-top:22px;
+    margin-top:24px;
     font-size:clamp(15px,2.4vw,18px);
     color:var(--gray);letter-spacing:.2em;
+    min-height:1.9em;
+    display:inline-flex;align-items:baseline;
   }
+  .typewriter-caret{
+    display:inline-block;width:2px;height:1.1em;
+    background:var(--ink);margin-left:2px;vertical-align:-0.15em;
+    animation:blink .85s steps(1) infinite;
+  }
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
   .hero__rule{
     width:56px;height:1px;background:var(--ink);margin-top:44px;
   }
-  .hero__note{
-    margin-top:18px;font-size:12px;color:var(--gray-light);letter-spacing:.12em;
+
+  /* ===== 首页两栏布局 ===== */
+  .home-layout{
+    display:grid;grid-template-columns:280px minmax(0,1fr);
+    gap:40px;align-items:start;padding-bottom:48px;
   }
+  .profile{
+    position:sticky;top:calc(var(--header-h) + 24px);
+    border:1px solid var(--line);background:var(--wash);
+    padding:30px 24px;
+    display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;
+  }
+  .profile .avatar{width:72px;height:72px;border-width:2px}
+  .profile__name{font-family:var(--serif);font-weight:900;font-size:22px;letter-spacing:.06em}
+  .profile__bio{font-size:13.5px;color:var(--gray);line-height:1.8}
+  .profile__facts{font-size:12.5px;color:var(--gray-light);letter-spacing:.08em}
+  .profile__facts b{color:var(--ink);font-weight:600}
+  .profile__github{
+    margin-top:8px;display:inline-flex;align-items:center;gap:8px;
+    min-height:44px;padding:0 20px;border:1px solid var(--ink);
+    font-size:13px;letter-spacing:.1em;
+    transition:background-color .3s ease,color .3s ease,border-color .3s ease;
+  }
+  .profile__github:hover{background:var(--ink);color:var(--paper)}
 
   /* ===== 文章列表 ===== */
   .section-head{
@@ -204,42 +232,42 @@
   }
   .section-head__count{font-size:12px;color:var(--gray);letter-spacing:.1em}
 
-  .post-card{
-    display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);
-    gap:0;margin-bottom:40px;
-    border:1px solid var(--line);
-    cursor:pointer;
+  .post-item{
+    border:1px solid var(--line);background:var(--paper);
+    cursor:pointer;margin-bottom:32px;overflow:hidden;
     transition:border-color .3s ease, box-shadow .3s ease, background-color .45s ease, color .45s ease;
   }
-  .post-card:hover{border-color:var(--ink)}
-  .post-card__media{overflow:hidden;background:var(--wash)}
-  .post-card__media img{
-    width:100%;height:100%;object-fit:cover;
+  .post-item:hover{border-color:var(--ink)}
+  .post-item__media{overflow:hidden;background:var(--wash)}
+  .post-item__media img{
+    width:100%;aspect-ratio:16/8;object-fit:cover;
     transition:transform .5s ease;
   }
-  .post-card:hover .post-card__media img{transform:scale(1.03)}
-  .post-card__body{
-    padding:32px 34px;
-    display:flex;flex-direction:column;justify-content:center;gap:12px;
-  }
-  .post-card__meta{
-    display:flex;align-items:center;justify-content:space-between;
+  .post-item:hover .post-item__media img{transform:scale(1.03)}
+  .post-item__body{padding:24px 26px 22px;display:flex;flex-direction:column;gap:12px}
+  .post-item__meta{
+    display:flex;align-items:center;gap:14px;
     font-size:12px;color:var(--gray);letter-spacing:.12em;
   }
-  .post-card__index{font-family:var(--serif);font-size:13px}
-  .post-card__title{
-    font-family:var(--serif);font-weight:700;font-size:26px;line-height:1.35;
+  .post-item__tag{border:1px solid var(--line);padding:2px 10px;font-size:11px;color:var(--ink-soft)}
+  .post-item__title{
+    font-family:var(--serif);font-weight:700;font-size:24px;line-height:1.4;
   }
-  .post-card__excerpt{
+  .post-item__title:hover{text-decoration:underline}
+  .post-item__excerpt{
     font-size:14.5px;color:var(--ink-soft);
     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
   }
-  .post-card__more{
-    display:inline-flex;align-items:center;gap:8px;
-    font-size:13px;font-weight:500;letter-spacing:.14em;margin-top:6px;
+  .post-item__foot{
+    display:flex;align-items:center;gap:16px;
+    font-size:12px;color:var(--gray-light);letter-spacing:.08em;margin-top:2px;
   }
-  .post-card__more svg{transition:transform .25s ease}
-  .post-card:hover .post-card__more svg{transform:translateX(4px)}
+  .post-item__more{
+    margin-left:auto;display:inline-flex;align-items:center;gap:6px;
+    color:var(--ink);font-weight:500;letter-spacing:.14em;
+  }
+  .post-item__more svg{transition:transform .25s ease}
+  .post-item:hover .post-item__more svg{transform:translateX(4px)}
 
   /* ===== 文章详情 ===== */
   .post-header{padding:64px 0 40px;text-align:center}
@@ -321,11 +349,11 @@
     .site-header__inner,.wrap{padding-left:20px;padding-right:20px}
     .site-nav{display:none}
     .hamburger{display:flex}
-    .hero{padding:72px 0 56px}
-    .post-card{grid-template-columns:1fr}
-    .post-card__media{aspect-ratio:3/2}
-    .post-card__body{padding:24px 22px}
-    .post-card__title{font-size:21px}
+    .hero{padding:64px 0 48px}
+    .home-layout{grid-template-columns:1fr;gap:32px}
+    .profile{position:static}
+    .post-item__body{padding:20px 20px 18px}
+    .post-item__title{font-size:21px}
     .about{grid-template-columns:1fr;gap:36px;padding:56px 0 72px}
     .about__media{order:-1}
     .post-nav{grid-template-columns:1fr}
@@ -371,17 +399,29 @@
   <section class="view" data-route="home">
     <div class="wrap">
       <div class="hero">
-        <img class="avatar avatar--lg" src="https://aka.doubaocdn.com/s/nKDhFpndRW" alt="脆香米的头像">
         <h1 class="hero__title">脆香米</h1>
-        <p class="hero__sub">一个写字的地方。</p>
+        <p class="hero__sub"><span id="typewriter"></span><span class="typewriter-caret"></span></p>
         <div class="hero__rule"></div>
-        <p class="hero__note" id="heroNote"></p>
       </div>
-      <div class="section-head">
-        <h2 class="section-head__title">文章</h2>
-        <span class="section-head__count" id="postCount"></span>
+      <div class="home-layout">
+        <aside class="profile">
+          <img class="avatar avatar--md" src="https://aka.doubaocdn.com/s/nKDhFpndRW" alt="脆香米的头像">
+          <h3 class="profile__name">脆香米</h3>
+          <p class="profile__bio">在黑白之间，写一点自己的东西。</p>
+          <div class="profile__facts">文章 <b id="profileCount">0</b> 篇</div>
+          <a class="profile__github" href="https://github.com/cbh13458-creator" target="_blank" rel="noopener">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg>
+            GitHub
+          </a>
+        </aside>
+        <div>
+          <div class="section-head">
+            <h2 class="section-head__title">文章</h2>
+            <span class="section-head__count" id="postCount"></span>
+          </div>
+          <div id="postList"></div>
+        </div>
       </div>
-      <div id="postList"></div>
     </div>
   </section>
 
@@ -454,8 +494,9 @@
   var postList = document.getElementById("postList");
   var postView = document.getElementById("postView");
   var aboutBody = document.getElementById("aboutBody");
-  var heroNote = document.getElementById("heroNote");
   var postCount = document.getElementById("postCount");
+  var profileCount = document.getElementById("profileCount");
+  var typewriterEl = document.getElementById("typewriter");
   var progress = document.getElementById("progress");
   var hamburger = document.getElementById("hamburger");
   var mobileMenu = document.getElementById("mobileMenu");
@@ -473,27 +514,34 @@
   }
 
   /* ===== 渲染：首页 ===== */
+  function countWords(arr){
+    return arr.join("").replace(/\s+/g, "").length;
+  }
   function renderHome(){
-    heroNote.textContent = "已写 " + posts.length + " 篇 · 最近更新于 " + formatDate(posts[0].date);
+    profileCount.textContent = posts.length;
     postCount.textContent = posts.length + " 篇";
-    postList.innerHTML = posts.map(function(post, i){
-      var idx = (i + 1 < 10 ? "0" : "") + (i + 1);
+    postList.innerHTML = posts.map(function(post){
+      var wc = countWords(post.content);
+      var minutes = Math.max(1, Math.round(wc / 300));
       return (
-        '<article class="post-card" data-id="' + post.id + '" tabindex="0" role="link" aria-label="阅读：' + esc(post.title) + '">' +
-          '<div class="post-card__media"><img src="' + post.image + '" alt="' + esc(post.alt) + '" loading="lazy"></div>' +
-          '<div class="post-card__body">' +
-            '<div class="post-card__meta"><time>' + post.date + '</time><span class="post-card__index">' + idx + '</span></div>' +
-            '<h3 class="post-card__title">' + esc(post.title) + '</h3>' +
-            '<p class="post-card__excerpt">' + esc(post.excerpt) + '</p>' +
-            '<span class="post-card__more">阅读' +
-              '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>' +
-            '</span>' +
+        '<article class="post-item" data-id="' + post.id + '" tabindex="0" role="link" aria-label="阅读：' + esc(post.title) + '">' +
+          '<div class="post-item__media"><img src="' + post.image + '" alt="' + esc(post.alt) + '" loading="lazy"></div>' +
+          '<div class="post-item__body">' +
+            '<div class="post-item__meta"><time>' + post.date + '</time><span class="post-item__tag">' + esc(post.tag) + '</span></div>' +
+            '<h3 class="post-item__title">' + esc(post.title) + '</h3>' +
+            '<p class="post-item__excerpt">' + esc(post.excerpt) + '</p>' +
+            '<div class="post-item__foot">' +
+              '<span>' + wc + ' 字</span><span>约 ' + minutes + ' 分钟</span>' +
+              '<span class="post-item__more">阅读' +
+                '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>' +
+              '</span>' +
+            '</div>' +
           '</div>' +
         '</article>'
       );
     }).join("");
 
-    Array.prototype.forEach.call(postList.querySelectorAll(".post-card"), function(card){
+    Array.prototype.forEach.call(postList.querySelectorAll(".post-item"), function(card){
       function open(){
         location.hash = "#/post?id=" + card.getAttribute("data-id");
       }
@@ -502,6 +550,23 @@
         if(e.key === "Enter" || e.key === " "){e.preventDefault();open();}
       });
     });
+  }
+
+  /* ===== 打字机效果 ===== */
+  var typewriterStarted = false;
+  function startTypewriter(){
+    if(typewriterStarted){ return; }
+    typewriterStarted = true;
+    var text = "一个写字的地方。";
+    var i = 0;
+    function step(){
+      if(i <= text.length){
+        typewriterEl.textContent = text.slice(0, i);
+        i++;
+        setTimeout(step, 130);
+      }
+    }
+    step();
   }
 
   /* ===== 渲染：文章详情 ===== */
@@ -565,7 +630,7 @@
 
     if(r.path === "post"){ renderPost(r.params); }
     else if(r.path === "about"){ renderAbout(); }
-    else { renderHome(); }
+    else { renderHome(); startTypewriter(); }
 
     document.title = "脆香米 · " + (routeNames[r.path] || "一个写字的地方");
 
@@ -644,7 +709,7 @@
   themeToggle.addEventListener("click", toggleTheme);
 
   /* ===== 启动 ===== */
-  var initialTheme = "dark";
+  var initialTheme = "light";
   try{
     var savedTheme = localStorage.getItem("cuixiangmi-theme");
     if(savedTheme === "light" || savedTheme === "dark"){ initialTheme = savedTheme; }
