@@ -521,6 +521,20 @@
     font-weight: 400;
     letter-spacing: .04em;
   }
+
+  /* ===== 刷新彩蛋 ===== */
+  .secret-layer{
+    position:fixed;inset:0;z-index:200;
+    display:grid;place-items:center;
+    background:#000;
+    opacity:0;pointer-events:none;
+    transition:opacity .6s ease;
+  }
+  .secret-layer.show{opacity:1;pointer-events:auto}
+  .secret-layer video{
+    width:100%;height:100%;object-fit:contain;
+    background:#000;display:block;
+  }
 </style>
 </head>
 <body>
@@ -627,6 +641,11 @@
     <span>在黑白之间，写一点自己的东西。</span>
   </div>
 </footer>
+
+<!-- ===== 刷新彩蛋：隐藏界面 ===== -->
+<div class="secret-layer" id="secretLayer" aria-hidden="true">
+  <video id="secretVideo" src="https://cbh13458-creator.github.io/CBH_255-blog/secret.mp4" preload="auto" playsinline></video>
+</div>
 
 <script>
 (function(){
@@ -947,6 +966,54 @@
 
   glassToggle.addEventListener("click", toggleGlassMode);
   applyGlassMode(glassMode);
+
+  /* ===== 刷新彩蛋 ===== */
+  var secretLayer = document.getElementById("secretLayer");
+  var secretVideo = document.getElementById("secretVideo");
+  var secretShown = false;
+  var soundUnlocked = false;
+
+  function closeSecret(){
+    try{ secretVideo.pause(); }catch(e){}
+    secretLayer.classList.remove("show");
+  }
+
+  // 首次用户交互 → 立即开启声音
+  function unlockSound(){
+    if(soundUnlocked){ return; }
+    soundUnlocked = true;
+    secretVideo.muted = false;
+    if(secretVideo.paused){
+      secretVideo.play().catch(function(){});
+    }
+  }
+  document.addEventListener("pointerdown", unlockSound, {once:true});
+  document.addEventListener("touchstart", unlockSound, {once:true});
+
+  function maybeShowSecret(){
+    if(secretShown){ return; }
+    var n = 0;
+    try{ n = parseInt(localStorage.getItem("cuixiangmi-refresh") || "0", 10); }catch(e){}
+    n += 1;
+    try{ localStorage.setItem("cuixiangmi-refresh", n); }catch(e){}
+    var trigger = (Math.random() < 0.02) || (n % 10 === 0);
+    if(!trigger){ return; }
+    secretShown = true;
+    secretLayer.classList.add("show");
+    // 先尝试直接带声音播放；被浏览器拦截则先静音自动播放，等首次点击开声
+    var p = secretVideo.play();
+    if(p && p.catch){
+      p.catch(function(){
+        secretVideo.muted = true;
+        secretVideo.play().catch(function(){});
+      });
+    }
+  }
+
+  // 完整播完 → 自动关闭，回到博客
+  secretVideo.addEventListener("ended", closeSecret);
+
+  maybeShowSecret();
 
   /* ===== 启动 ===== */
   var initialTheme = "light";
