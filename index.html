@@ -534,6 +534,7 @@
     background:#000;
     opacity:0;pointer-events:none;
     transition:opacity .6s ease;
+    touch-action:none;
   }
   .secret-layer.show{opacity:1;pointer-events:auto}
   .secret-layer video{
@@ -552,6 +553,7 @@
     letter-spacing:6px;
     text-align:center;
     padding:20px;
+    touch-action:none;
   }
   .secret-intro.show{display:flex}
   .secret-intro.flash{animation:secretFlash .45s ease}
@@ -1013,6 +1015,7 @@
     try{ secretVideo.pause(); }catch(e){}
     try{ secretAudio.pause(); }catch(e){}
     secretLayer.classList.remove("show");
+    document.body.style.overflow = "";
   }
 
   // 全局预热：用户在本站任何一次点击，都为后续声音自动播放建立浏览器权限
@@ -1041,6 +1044,7 @@
   // 连点10次主题按钮 → 过渡文字 + 闪屏 → 彩蛋
   function triggerSecretWithIntro(){
     secretShown = true;
+    document.body.style.overflow = "hidden";
     var intro = document.getElementById("secretIntro");
     intro.classList.add("show");
     setTimeout(function(){
