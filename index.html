@@ -973,7 +973,6 @@
   var secretVideo = document.getElementById("secretVideo");
   var secretAudio = document.getElementById("secretAudio");
   var secretShown = false;
-  var soundUnlocked = false;
 
   function closeSecret(){
     try{ secretVideo.pause(); }catch(e){}
@@ -981,15 +980,21 @@
     secretLayer.classList.remove("show");
   }
 
-  // 首次用户交互 → 播放提取的 MP3 音乐
-  function unlockSound(){
-    if(soundUnlocked){ return; }
-    soundUnlocked = true;
-    var p = secretAudio.play();
-    if(p && p.catch){ p.catch(function(){}); }
-  }
-  document.addEventListener("pointerdown", unlockSound, {once:true});
-  document.addEventListener("touchstart", unlockSound, {once:true});
+  // 全局预热：用户在本站任何一次点击，都为后续声音自动播放建立浏览器权限
+  document.addEventListener("pointerdown", function(){
+    try{
+      var ctx = new (window.AudioContext || window.webkitAudioContext)();
+      if(ctx.state === "suspended"){ ctx.resume(); }
+    }catch(e){}
+  }, {capture:true, once:true});
+
+  // 彩蛋出现后，若声音还没出来，任意点击都补上声音（兜底）
+  document.addEventListener("pointerdown", function(){
+    if(!secretShown){ return; }
+    if(secretAudio.paused){
+      secretAudio.play().catch(function(){});
+    }
+  });
 
   function maybeShowSecret(){
     if(secretShown){ return; }
@@ -1004,6 +1009,9 @@
     // 画面：视频静音自动播放（手机端保证画面直接动起来）
     var p = secretVideo.play();
     if(p && p.catch){ p.catch(function(){}); }
+    // 声音：直接尝试带声播放 MP3 —— 用户与该站点已有交互时，浏览器会直接放行
+    var a = secretAudio.play();
+    if(a && a.catch){ a.catch(function(){}); }
   }
 
   // 视频完整播完 → 停音乐、自动关闭，回到博客
