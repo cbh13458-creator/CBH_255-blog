@@ -570,6 +570,10 @@
     margin-top:16px;
     padding-top:16px;
     border-top:1px solid var(--line);
+    width:100%;
+    max-width:100%;
+    overflow:hidden;
+    box-sizing:border-box;
   }
   .music-box__title{
     font-size:11px;
@@ -585,41 +589,32 @@
     font-family:inherit !important;
     box-shadow:none !important;
     overflow:hidden;
-    max-width:100%;
-    box-sizing:border-box;
+    width:100% !important;
+    max-width:100% !important;
   }
-  .aplayer *{box-sizing:border-box}
-  .aplayer .aplayer-body{background:var(--paper) !important}
+  .aplayer .aplayer-body{background:var(--paper) !important;width:100% !important}
   .aplayer .aplayer-pic{background-size:cover;background-position:center}
-  .aplayer .aplayer-info .aplayer-music .aplayer-title{color:var(--ink) !important;font-size:13px !important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .aplayer .aplayer-info .aplayer-music .aplayer-author{color:var(--gray-light) !important;font-size:11px !important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .aplayer .aplayer-info .aplayer-music .aplayer-title{color:var(--ink) !important;font-size:13px !important}
+  .aplayer .aplayer-info .aplayer-music .aplayer-author{color:var(--gray-light) !important;font-size:11px !important}
   .aplayer .aplayer-controller .aplayer-time{color:var(--gray-light) !important}
   .aplayer .aplayer-button{color:var(--ink) !important}
   .aplayer .aplayer-button:hover{opacity:.6}
   .aplayer .aplayer-bar-wrap .aplayer-bar .aplayer-played{background:var(--ink) !important}
   .aplayer .aplayer-bar-wrap .aplayer-bar .aplayer-loaded{background:var(--line) !important}
   .aplayer .aplayer-list{background:var(--paper) !important;border-top:1px solid var(--line) !important;max-height:240px;overflow-y:auto}
-  .aplayer .aplayer-list ol li{color:var(--ink-soft) !important;border-top:1px solid var(--line) !important;font-size:12px !important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .aplayer .aplayer-list ol li{color:var(--ink-soft) !important;border-top:1px solid var(--line) !important;font-size:12px !important}
   .aplayer .aplayer-list ol li:hover{background:var(--line) !important}
   .aplayer .aplayer-list ol li.aplayer-list-light{color:var(--ink) !important;background:var(--line) !important}
   .aplayer .aplayer-list ol li .aplayer-list-index{color:var(--gray-light) !important}
   .aplayer .aplayer-lrc{background:var(--paper) !important}
   .aplayer .aplayer-lrc p{color:var(--gray-light) !important}
   .aplayer .aplayer-lrc p.aplayer-lrc-current{color:var(--ink) !important}
-  /* 手机端播放器适配 */
+  /* 手机端播放器适配（只缩文字，不动布局结构） */
   @media (max-width:640px){
-    .aplayer{border-radius:6px !important}
-    .aplayer .aplayer-pic{width:56px !important;height:56px !important}
-    .aplayer .aplayer-info{padding:8px 10px !important}
-    .aplayer .aplayer-info .aplayer-music{margin-bottom:4px !important}
     .aplayer .aplayer-info .aplayer-music .aplayer-title{font-size:12px !important}
     .aplayer .aplayer-info .aplayer-music .aplayer-author{font-size:10px !important}
-    .aplayer .aplayer-controller{height:20px !important}
-    .aplayer .aplayer-controller .aplayer-time{bottom:2px !important}
-    .aplayer .aplayer-button{width:24px !important;height:24px !important}
-    .aplayer .aplayer-button svg{width:18px !important;height:18px !important}
     .aplayer .aplayer-list{max-height:180px !important}
-    .aplayer .aplayer-list ol li{font-size:11px !important;padding:6px 10px !important}
+    .aplayer .aplayer-list ol li{font-size:11px !important}
     .music-box{padding:12px}
     .music-box__title{font-size:10px;margin-bottom:8px}
     .music-search button{padding:8px 12px;font-size:11px}
