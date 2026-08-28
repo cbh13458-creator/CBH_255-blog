@@ -562,7 +562,77 @@
     50%{background:#fff;color:#000}
     100%{background:#000;color:#fff}
   }
+  /* ===== 音乐播放器（黑白适配） ===== */
+  .music-box{
+    margin-top:16px;
+    padding-top:16px;
+    border-top:1px solid var(--line);
+  }
+  .music-box__title{
+    font-size:11px;
+    color:var(--gray-light);
+    letter-spacing:.16em;
+    margin-bottom:10px;
+    text-transform:uppercase;
+  }
+  .aplayer{
+    background:var(--paper) !important;
+    border:1px solid var(--line) !important;
+    border-radius:8px !important;
+    font-family:inherit !important;
+    box-shadow:none !important;
+    overflow:hidden;
+  }
+  .aplayer .aplayer-body{background:var(--paper) !important}
+  .aplayer .aplayer-info .aplayer-music .aplayer-title{color:var(--ink) !important;font-size:13px !important}
+  .aplayer .aplayer-info .aplayer-music .aplayer-author{color:var(--gray-light) !important;font-size:11px !important}
+  .aplayer .aplayer-controller .aplayer-time{color:var(--gray-light) !important}
+  .aplayer .aplayer-button{color:var(--ink) !important}
+  .aplayer .aplayer-button:hover{opacity:.6}
+  .aplayer .aplayer-bar-wrap .aplayer-bar .aplayer-played{background:var(--ink) !important}
+  .aplayer .aplayer-bar-wrap .aplayer-bar .aplayer-loaded{background:var(--line) !important}
+  .aplayer .aplayer-list{background:var(--paper) !important;border-top:1px solid var(--line) !important}
+  .aplayer .aplayer-list ol li{color:var(--ink-soft) !important;border-top:1px solid var(--line) !important;font-size:12px !important}
+  .aplayer .aplayer-list ol li:hover{background:var(--line) !important}
+  .aplayer .aplayer-list ol li.aplayer-list-light{color:var(--ink) !important;background:var(--line) !important}
+  .aplayer .aplayer-list ol li .aplayer-list-index{color:var(--gray-light) !important}
+  .aplayer .aplayer-lrc{background:var(--paper) !important}
+  .aplayer .aplayer-lrc p{color:var(--gray-light) !important}
+  .aplayer .aplayer-lrc p.aplayer-lrc-current{color:var(--ink) !important}
+  .music-search{
+    display:flex;gap:8px;margin-top:10px;
+  }
+  .music-search input{
+    flex:1;min-width:0;
+    background:var(--paper);
+    border:1px solid var(--line);
+    color:var(--ink);
+    padding:8px 12px;
+    font-size:12.5px;
+    border-radius:6px;
+    outline:none;
+    font-family:inherit;
+    transition:border-color .2s;
+  }
+  .music-search input:focus{border-color:var(--ink)}
+  .music-search input::placeholder{color:var(--gray-light)}
+  .music-search button{
+    background:var(--ink);
+    color:var(--paper);
+    border:none;
+    padding:8px 16px;
+    font-size:12.5px;
+    border-radius:6px;
+    cursor:pointer;
+    font-family:inherit;
+    transition:opacity .2s;
+  }
+  .music-search button:hover{opacity:.75}
+  .music-search button:active{opacity:.5}
 </style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script>
 </head>
 <body>
 
@@ -619,6 +689,21 @@
             <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v5.686c-.036 1.51-.556 2.765-1.56 3.761-1.004.995-2.263 1.519-3.773 1.573h-.854c-.24 0-.48.018-.72.054-.24.036-.444.12-.613.252l-2.267 1.866a1.22 1.22 0 0 1-.906.36c-.362 0-.662-.12-.906-.36l-2.268-1.866a1.667 1.667 0 0 0-.612-.252 4.147 4.147 0 0 0-.72-.054h-.854c-1.51-.054-2.769-.578-3.773-1.574-1.004-.995-1.524-2.249-1.56-3.76V7.987c.036-1.51.556-2.765 1.56-3.761 1.004-.995 2.263-1.519 3.773-1.573h.96c.012 0 .024-.006.036-.018.012-.012.018-.03.018-.054V1.42c0-.156.054-.29.162-.402A.558.558 0 0 1 7.362.9c.156 0 .29.054.402.162l.072.072c.18.18.366.336.558.468.192.132.408.24.648.324.24.084.48.132.72.144.24.012.486.018.738.018h1.062c.252 0 .498-.006.738-.018.24-.012.48-.06.72-.144.24-.084.456-.192.648-.324.192-.132.378-.288.558-.468l.072-.072a.558.558 0 0 1 .402-.162c.156 0 .29.054.402.162.108.112.162.246.162.402v1.16c0 .024.006.042.018.054.012.012.024.018.036.018h.96zm-10.637 3.652c-.156 0-.29.054-.402.162a.558.558 0 0 0-.162.402v.072c0 .156.054.29.162.402.112.108.246.162.402.162h.054c.156 0 .29-.054.402-.162a.558.558 0 0 0 .162-.402v-.072a.558.558 0 0 0-.162-.402.558.558 0 0 0-.402-.162h-.054zm9.648 0c-.156 0-.29.054-.402.162a.558.558 0 0 0-.162.402v.072c0 .156.054.29.162.402.112.108.246.162.402.162h.054c.156 0 .29-.054.402-.162a.558.558 0 0 0 .162-.402v-.072a.558.558 0 0 0-.162-.402.558.558 0 0 0-.402-.162h-.054zM9.9 12.342a.558.558 0 0 0-.402.162.558.558 0 0 0-.162.402v.072c0 .156.054.29.162.402.112.108.246.162.402.162.156 0 .29-.054.402-.162a.558.558 0 0 0 .162-.402v-.072a.558.558 0 0 0-.162-.402.558.558 0 0 0-.402-.162H9.9zm4.2 0a.558.558 0 0 0-.402.162.558.558 0 0 0-.162.402v.072c0 .156.054.29.162.402.112.108.246.162.402.162.156 0 .29-.054.402-.162a.558.558 0 0 0 .162-.402v-.072a.558.558 0 0 0-.162-.402.558.558 0 0 0-.402-.162h-.402z"/></svg>
             哔哩哔哩
           </a>
+          <div class="music-box">
+            <div class="music-box__title">正在播放</div>
+            <div class="aplayer"
+                 data-id="60198"
+                 data-server="netease"
+                 data-type="playlist"
+                 data-mode="random"
+                 data-autoplay="false"
+                 data-list-folded="true">
+            </div>
+            <div class="music-search">
+              <input type="text" id="musicSearchInput" placeholder="搜首歌..." />
+              <button id="musicSearchBtn" type="button">搜</button>
+            </div>
+          </div>
         </aside>
         <div>
           <div class="section-head">
@@ -734,6 +819,25 @@
         "做这个网站的时候，我想了很久要放什么。最后决定只放文字。文字是最不讨好的东西，它不会动，不会闪，不会自动播放。你得停下来，一个字一个字地读。",
         "但我觉得这挺好的。在什么都快的时代，慢一点，也许是一种奢侈。",
         "窗外的光每天都不一样。有时候强，有时候弱，有时候被云遮住。但只要有光，就有影。这大概是我能想到的，关于黑白最简单的解释。"
+      ]
+    },
+    {
+      id: 4,
+      title: "快开学了",
+      date: "2026.08.29",
+      tag: "随笔",
+      image: "https://aka.doubaocdn.com/s/YWVsih7uDo",
+      alt: "黑白照片，背着新书包的小学生站在校门口，望向校园",
+      excerpt: "暑假最后几天，我把新书包从柜子里拿出来，挂在门后。每天路过都看一眼，好像它在提醒我：你要上初中了。",
+      content: [
+        "暑假最后几天，我把新书包从柜子里拿出来，挂在门后。每天路过都看一眼，好像它在提醒我：你要上初中了。",
+        "其实我还没准备好。小学六年，教室在三楼，左手第二间。班主任姓王，喜欢用红笔在作业本上画五角星。我的座位靠窗，夏天能闻到操场边上梧桐树的味道。这些东西，以后都没有了。",
+        "上周和小学同学最后一次见面，在学校门口的小卖部。我们买了冰棍，坐在台阶上吃，谁也没提开学的事。最后他说，初中要是被人欺负了，告诉我。我说好。然后就各自回家了。",
+        "妈妈给我买了新的笔袋，黑色的，她说初中生要用成熟一点的。我偷偷把小学时用的卡通橡皮放进去了。不是幼稚，就是觉得带着它，好像没那么害怕。",
+        "听说初中的作业很多，每天要写到很晚。听说数学会变难，英语要背很多单词。听说食堂的饭没有小学的好吃。这些「听说」像一群小虫子，在我脑子里嗡嗡转。",
+        "但我也有点期待。期待新的教室，期待认识新的人，期待自己变成一个不一样的人。就像小时候第一次背上书包去小学一样，紧张，但又觉得，好像什么都有可能。",
+        "明天就要去报到了。我把书包摘下来，检查了一遍：铅笔削好了，笔记本放进去了，水壶灌满了。还有那块卡通橡皮，在最里面的小口袋里。",
+        "快开学了。夏天快结束了。我也要往前走了。"
       ]
     }
   ];
@@ -1104,6 +1208,36 @@
   });
 
   maybeShowSecret();
+
+  /* ===== 音乐播放器搜索 ===== */
+  function doMusicSearch(){
+    var kw = document.getElementById("musicSearchInput").value.trim();
+    if(!kw){ return; }
+    var apEl = document.querySelector(".aplayer");
+    if(!apEl || !apEl.aplayer){ alert("播放器还没加载好，稍等一下"); return; }
+    var ap = apEl.aplayer;
+    fetch("https://api.i-meto.com/meting/api?server=netease&type=search&name=" + encodeURIComponent(kw))
+      .then(function(r){ return r.json(); })
+      .then(function(list){
+        if(!list || !list.length){ alert("没找到相关歌曲"); return; }
+        ap.list.clear();
+        list.forEach(function(song){
+          ap.list.add({
+            name: song.name,
+            artist: song.artist,
+            url: song.url,
+            cover: song.cover,
+            lrc: song.lrc
+          });
+        });
+        ap.play();
+      })
+      .catch(function(){ alert("搜索失败，稍后再试"); });
+  }
+  document.getElementById("musicSearchBtn").addEventListener("click", doMusicSearch);
+  document.getElementById("musicSearchInput").addEventListener("keydown", function(e){
+    if(e.key === "Enter"){ doMusicSearch(); }
+  });
 
   /* ===== 启动 ===== */
   var initialTheme = "light";
