@@ -43,9 +43,9 @@
     line-height:1.7;
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
-    max-width:100vw;
+    width:100%;
   }
-  html{max-width:100vw;overflow-x:hidden}
+  html{overflow-x:hidden;width:100%}
   /* 主题切换时的平滑颜色过渡 */
   body, body *{
     transition: background-color .45s ease, color .45s ease, border-color .45s ease;
@@ -306,6 +306,9 @@
     border:1px solid var(--line);background:var(--wash);
     padding:30px 24px;
     display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;
+    max-width:100%;
+    overflow:hidden;
+    box-sizing:border-box;
   }
   .profile .avatar{width:72px;height:72px;border-width:2px}
   .profile__name{font-family:var(--serif);font-weight:900;font-size:22px;letter-spacing:.06em}
@@ -593,10 +596,13 @@
     max-width:100% !important;
   }
   .aplayer .aplayer-body{background:var(--paper) !important;width:100% !important}
-  .aplayer .aplayer-pic{background-size:cover;background-position:center}
-  .aplayer .aplayer-info .aplayer-music .aplayer-title{color:var(--ink) !important;font-size:13px !important}
-  .aplayer .aplayer-info .aplayer-music .aplayer-author{color:var(--gray-light) !important;font-size:11px !important}
-  .aplayer .aplayer-controller .aplayer-time{color:var(--gray-light) !important}
+  .aplayer .aplayer-info{min-width:0 !important;flex:1 !important}
+  .aplayer .aplayer-music{min-width:0 !important;overflow:hidden !important}
+  .aplayer .aplayer-pic{background-size:cover;background-position:center;flex-shrink:0}
+  .aplayer .aplayer-info .aplayer-music .aplayer-title{color:var(--ink) !important;font-size:13px !important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+  .aplayer .aplayer-info .aplayer-music .aplayer-author{color:var(--gray-light) !important;font-size:11px !important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+  .aplayer .aplayer-controller{min-width:0 !important}
+  .aplayer .aplayer-controller .aplayer-time{color:var(--gray-light) !important;min-width:0}
   .aplayer .aplayer-button{color:var(--ink) !important}
   .aplayer .aplayer-button:hover{opacity:.6}
   .aplayer .aplayer-bar-wrap .aplayer-bar .aplayer-played{background:var(--ink) !important}
