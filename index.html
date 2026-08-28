@@ -659,7 +659,6 @@
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
 <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script>
 </head>
 <body>
 
@@ -718,14 +717,7 @@
           </a>
           <div class="music-box">
             <div class="music-box__title">正在播放</div>
-            <div class="aplayer"
-                 data-id="3778678"
-                 data-server="netease"
-                 data-type="playlist"
-                 data-mode="random"
-                 data-autoplay="false"
-                 data-list-folded="true">
-            </div>
+            <div class="aplayer" id="aplayer"></div>
             <div class="music-search">
               <input type="text" id="musicSearchInput" placeholder="搜首歌..." />
               <button id="musicSearchBtn" type="button">搜</button>
@@ -1217,52 +1209,68 @@
 
   maybeShowSecret();
 
-  /* ===== 音乐播放器搜索 ===== */
+  /* ===== 音乐播放器（自建初始化，用快速API） ===== */
+  var MUSIC_API = "https://api.injahow.cn/meting/?server=netease";
+  var musicPlayer = null;
+
+  function initMusicPlayer(){
+    fetch(MUSIC_API + "&type=playlist&id=3778678")
+      .then(function(r){ return r.json(); })
+      .then(function(list){
+        if(!list || !list.length){ return; }
+        var audio = list.map(function(s){
+          return {
+            name: s.name || s.title,
+            artist: s.artist || s.author,
+            url: s.url,
+            cover: s.pic,
+            lrc: s.lrc
+          };
+        });
+        musicPlayer = new APlayer({
+          container: document.getElementById("aplayer"),
+          audio: audio,
+          mode: "random",
+          listFolded: true,
+          preload: "none"
+        });
+      })
+      .catch(function(){});
+  }
+  initMusicPlayer();
+
   function doMusicSearch(){
     var kw = document.getElementById("musicSearchInput").value.trim();
     if(!kw){ return; }
     var btn = document.getElementById("musicSearchBtn");
-    btn.textContent = "加载中";
+    btn.textContent = "搜索中";
     btn.disabled = true;
-    function trySearch(attempts){
-      var apEl = document.querySelector(".aplayer");
-      if(apEl && apEl.aplayer){
-        var ap = apEl.aplayer;
-        btn.textContent = "搜索中";
-        fetch("https://api.i-meto.com/meting/api?server=netease&type=search&name=" + encodeURIComponent(kw))
-          .then(function(r){ return r.json(); })
-          .then(function(list){
-            if(!list || !list.length){
-              btn.textContent = "没找到";
-              setTimeout(function(){ btn.textContent = "搜"; btn.disabled = false; }, 1500);
-              return;
-            }
-            ap.list.clear();
-            list.forEach(function(song){
-              ap.list.add({
-                name: song.name,
-                artist: song.artist,
-                url: song.url,
-                cover: song.cover,
-                lrc: song.lrc
-              });
-            });
-            ap.play();
-            btn.textContent = "搜";
-            btn.disabled = false;
-          })
-          .catch(function(){
-            btn.textContent = "失败";
-            setTimeout(function(){ btn.textContent = "搜"; btn.disabled = false; }, 1500);
+    fetch(MUSIC_API + "&type=search&name=" + encodeURIComponent(kw))
+      .then(function(r){ return r.json(); })
+      .then(function(list){
+        if(!list || !list.length || !musicPlayer){
+          btn.textContent = "没找到";
+          setTimeout(function(){ btn.textContent = "搜"; btn.disabled = false; }, 1500);
+          return;
+        }
+        musicPlayer.list.clear();
+        list.forEach(function(s){
+          musicPlayer.list.add({
+            name: s.name || s.title,
+            artist: s.artist || s.author,
+            url: s.url,
+            cover: s.pic,
+            lrc: s.lrc
           });
-      } else if(attempts > 0){
-        setTimeout(function(){ trySearch(attempts - 1); }, 500);
-      } else {
-        btn.textContent = "超时";
+        });
+        musicPlayer.play();
+        btn.textContent = "搜";
+        btn.disabled = false;
+      })
+      .catch(function(){
+        btn.textContent = "失败";
         setTimeout(function(){ btn.textContent = "搜"; btn.disabled = false; }, 1500);
-      }
-    }
-    trySearch(20);
+      });
   }
   document.getElementById("musicSearchBtn").addEventListener("click", doMusicSearch);
   document.getElementById("musicSearchInput").addEventListener("keydown", function(e){
