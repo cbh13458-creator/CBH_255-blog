@@ -629,6 +629,33 @@
   }
   .music-search button:hover{opacity:.75}
   .music-search button:active{opacity:.5}
+  /* 毛玻璃模式下播放器适配 */
+  html.glass-mode .music-box{
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:12px;
+    padding:14px;
+    border-top:none;
+    margin-top:14px;
+  }
+  html.glass-mode .aplayer{
+    background:rgba(255,255,255,.06) !important;
+    border:1px solid rgba(255,255,255,.1) !important;
+  }
+  html.glass-mode .aplayer .aplayer-body{background:transparent !important}
+  html.glass-mode .music-search input{
+    background:rgba(255,255,255,.08);
+    border-color:rgba(255,255,255,.15);
+    color:#fff;
+  }
+  html.glass-mode .music-search input::placeholder{color:rgba(255,255,255,.4)}
+  html.glass-mode .music-search input:focus{border-color:rgba(255,255,255,.4)}
+  html.glass-mode .music-search button{
+    background:rgba(255,255,255,.15);
+    color:#fff;
+  }
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
 <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
@@ -1213,26 +1240,43 @@
   function doMusicSearch(){
     var kw = document.getElementById("musicSearchInput").value.trim();
     if(!kw){ return; }
-    var apEl = document.querySelector(".aplayer");
-    if(!apEl || !apEl.aplayer){ alert("播放器还没加载好，稍等一下"); return; }
-    var ap = apEl.aplayer;
-    fetch("https://api.i-meto.com/meting/api?server=netease&type=search&name=" + encodeURIComponent(kw))
-      .then(function(r){ return r.json(); })
-      .then(function(list){
-        if(!list || !list.length){ alert("没找到相关歌曲"); return; }
-        ap.list.clear();
-        list.forEach(function(song){
-          ap.list.add({
-            name: song.name,
-            artist: song.artist,
-            url: song.url,
-            cover: song.cover,
-            lrc: song.lrc
+    var btn = document.getElementById("musicSearchBtn");
+    btn.textContent = "...";
+    btn.disabled = true;
+    function trySearch(attempts){
+      var apEl = document.querySelector(".aplayer");
+      if(apEl && apEl.aplayer){
+        var ap = apEl.aplayer;
+        fetch("https://api.i-meto.com/meting/api?server=netease&type=search&name=" + encodeURIComponent(kw))
+          .then(function(r){ return r.json(); })
+          .then(function(list){
+            if(!list || !list.length){ alert("没找到相关歌曲"); return; }
+            ap.list.clear();
+            list.forEach(function(song){
+              ap.list.add({
+                name: song.name,
+                artist: song.artist,
+                url: song.url,
+                cover: song.cover,
+                lrc: song.lrc
+              });
+            });
+            ap.play();
+          })
+          .catch(function(){ alert("搜索失败，稍后再试"); })
+          .finally(function(){
+            btn.textContent = "搜";
+            btn.disabled = false;
           });
-        });
-        ap.play();
-      })
-      .catch(function(){ alert("搜索失败，稍后再试"); });
+      } else if(attempts > 0){
+        setTimeout(function(){ trySearch(attempts - 1); }, 500);
+      } else {
+        alert("播放器加载失败，刷新页面试试");
+        btn.textContent = "搜";
+        btn.disabled = false;
+      }
+    }
+    trySearch(10);
   }
   document.getElementById("musicSearchBtn").addEventListener("click", doMusicSearch);
   document.getElementById("musicSearchInput").addEventListener("keydown", function(e){
