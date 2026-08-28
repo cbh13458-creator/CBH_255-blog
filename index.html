@@ -719,7 +719,7 @@
           <div class="music-box">
             <div class="music-box__title">正在播放</div>
             <div class="aplayer"
-                 data-id="60198"
+                 data-id="3778678"
                  data-server="netease"
                  data-type="playlist"
                  data-mode="random"
@@ -1222,16 +1222,21 @@
     var kw = document.getElementById("musicSearchInput").value.trim();
     if(!kw){ return; }
     var btn = document.getElementById("musicSearchBtn");
-    btn.textContent = "...";
+    btn.textContent = "加载中";
     btn.disabled = true;
     function trySearch(attempts){
       var apEl = document.querySelector(".aplayer");
       if(apEl && apEl.aplayer){
         var ap = apEl.aplayer;
+        btn.textContent = "搜索中";
         fetch("https://api.i-meto.com/meting/api?server=netease&type=search&name=" + encodeURIComponent(kw))
           .then(function(r){ return r.json(); })
           .then(function(list){
-            if(!list || !list.length){ alert("没找到相关歌曲"); return; }
+            if(!list || !list.length){
+              btn.textContent = "没找到";
+              setTimeout(function(){ btn.textContent = "搜"; btn.disabled = false; }, 1500);
+              return;
+            }
             ap.list.clear();
             list.forEach(function(song){
               ap.list.add({
@@ -1243,21 +1248,21 @@
               });
             });
             ap.play();
-          })
-          .catch(function(){ alert("搜索失败，稍后再试"); })
-          .finally(function(){
             btn.textContent = "搜";
             btn.disabled = false;
+          })
+          .catch(function(){
+            btn.textContent = "失败";
+            setTimeout(function(){ btn.textContent = "搜"; btn.disabled = false; }, 1500);
           });
       } else if(attempts > 0){
         setTimeout(function(){ trySearch(attempts - 1); }, 500);
       } else {
-        alert("播放器加载失败，刷新页面试试");
-        btn.textContent = "搜";
-        btn.disabled = false;
+        btn.textContent = "超时";
+        setTimeout(function(){ btn.textContent = "搜"; btn.disabled = false; }, 1500);
       }
     }
-    trySearch(10);
+    trySearch(20);
   }
   document.getElementById("musicSearchBtn").addEventListener("click", doMusicSearch);
   document.getElementById("musicSearchInput").addEventListener("keydown", function(e){
