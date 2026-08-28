@@ -600,35 +600,24 @@
   .aplayer .aplayer-lrc p{color:var(--gray-light) !important}
   .aplayer .aplayer-lrc p.aplayer-lrc-current{color:var(--ink) !important}
   .music-search{
-    display:flex;gap:8px;margin-top:10px;
+    margin-top:10px;
   }
-  .music-search input{
-    flex:1;min-width:0;
-    background:var(--paper);
-    border:1px solid var(--line);
-    color:var(--ink);
-    padding:8px 12px;
-    font-size:12.5px;
-    border-radius:6px;
-    outline:none;
-    font-family:inherit;
-    transition:border-color .2s;
-  }
-  .music-search input:focus{border-color:var(--ink)}
-  .music-search input::placeholder{color:var(--gray-light)}
   .music-search button{
+    width:100%;
     background:var(--ink);
     color:var(--paper);
     border:none;
-    padding:8px 16px;
+    padding:10px 16px;
     font-size:12.5px;
     border-radius:6px;
     cursor:pointer;
     font-family:inherit;
     transition:opacity .2s;
+    letter-spacing:.1em;
   }
   .music-search button:hover{opacity:.75}
   .music-search button:active{opacity:.5}
+  .music-search button:disabled{opacity:.5;cursor:not-allowed}
   /* 毛玻璃模式下播放器适配 */
   html.glass-mode .music-box{
     background:rgba(255,255,255,.08);
@@ -645,13 +634,6 @@
     border:1px solid rgba(255,255,255,.1) !important;
   }
   html.glass-mode .aplayer .aplayer-body{background:transparent !important}
-  html.glass-mode .music-search input{
-    background:rgba(255,255,255,.08);
-    border-color:rgba(255,255,255,.15);
-    color:#fff;
-  }
-  html.glass-mode .music-search input::placeholder{color:rgba(255,255,255,.4)}
-  html.glass-mode .music-search input:focus{border-color:rgba(255,255,255,.4)}
   html.glass-mode .music-search button{
     background:rgba(255,255,255,.15);
     color:#fff;
@@ -719,8 +701,7 @@
             <div class="music-box__title">正在播放</div>
             <div class="aplayer" id="aplayer"></div>
             <div class="music-search">
-              <input type="text" id="musicSearchInput" placeholder="搜首歌..." />
-              <button id="musicSearchBtn" type="button">搜</button>
+              <button id="musicSwitchBtn" type="button">换一批</button>
             </div>
           </div>
         </aside>
@@ -1212,12 +1193,19 @@
   /* ===== 音乐播放器（自建初始化，用快速API） ===== */
   var MUSIC_API = "https://api.injahow.cn/meting/?server=netease";
   var musicPlayer = null;
+  var playlists = [
+    { id: "3778678", name: "飙升榜" },
+    { id: "3779629", name: "新歌榜" },
+    { id: "2884035", name: "原创榜" },
+    { id: "60198", name: "欧美精选" }
+  ];
+  var playlistIndex = 0;
 
-  function initMusicPlayer(){
-    fetch(MUSIC_API + "&type=playlist&id=3778678")
+  function loadPlaylist(pl, cb){
+    fetch(MUSIC_API + "&type=playlist&id=" + pl.id)
       .then(function(r){ return r.json(); })
       .then(function(list){
-        if(!list || !list.length){ return; }
+        if(!list || !list.length){ if(cb) cb(null); return; }
         var audio = list.map(function(s){
           return {
             name: s.name || s.title,
@@ -1227,55 +1215,46 @@
             lrc: s.lrc
           };
         });
-        musicPlayer = new APlayer({
-          container: document.getElementById("aplayer"),
-          audio: audio,
-          mode: "random",
-          listFolded: true,
-          preload: "none"
-        });
+        if(cb) cb(audio);
       })
-      .catch(function(){});
+      .catch(function(){ if(cb) cb(null); });
+  }
+
+  function initMusicPlayer(){
+    loadPlaylist(playlists[0], function(audio){
+      if(!audio){ return; }
+      musicPlayer = new APlayer({
+        container: document.getElementById("aplayer"),
+        audio: audio,
+        mode: "random",
+        listFolded: true,
+        preload: "none"
+      });
+    });
   }
   initMusicPlayer();
 
-  function doMusicSearch(){
-    var kw = document.getElementById("musicSearchInput").value.trim();
-    if(!kw){ return; }
-    var btn = document.getElementById("musicSearchBtn");
-    btn.textContent = "搜索中";
+  function switchPlaylist(){
+    if(!musicPlayer){ return; }
+    playlistIndex = (playlistIndex + 1) % playlists.length;
+    var pl = playlists[playlistIndex];
+    var btn = document.getElementById("musicSwitchBtn");
+    btn.textContent = "加载中";
     btn.disabled = true;
-    fetch(MUSIC_API + "&type=search&name=" + encodeURIComponent(kw))
-      .then(function(r){ return r.json(); })
-      .then(function(list){
-        if(!list || !list.length || !musicPlayer){
-          btn.textContent = "没找到";
-          setTimeout(function(){ btn.textContent = "搜"; btn.disabled = false; }, 1500);
-          return;
-        }
-        musicPlayer.list.clear();
-        list.forEach(function(s){
-          musicPlayer.list.add({
-            name: s.name || s.title,
-            artist: s.artist || s.author,
-            url: s.url,
-            cover: s.pic,
-            lrc: s.lrc
-          });
-        });
-        musicPlayer.play();
-        btn.textContent = "搜";
-        btn.disabled = false;
-      })
-      .catch(function(){
+    loadPlaylist(pl, function(audio){
+      if(!audio){
         btn.textContent = "失败";
-        setTimeout(function(){ btn.textContent = "搜"; btn.disabled = false; }, 1500);
-      });
+        setTimeout(function(){ btn.textContent = "换一批"; btn.disabled = false; }, 1500);
+        return;
+      }
+      musicPlayer.list.clear();
+      audio.forEach(function(s){ musicPlayer.list.add(s); });
+      musicPlayer.play();
+      btn.textContent = pl.name;
+      btn.disabled = false;
+    });
   }
-  document.getElementById("musicSearchBtn").addEventListener("click", doMusicSearch);
-  document.getElementById("musicSearchInput").addEventListener("keydown", function(e){
-    if(e.key === "Enter"){ doMusicSearch(); }
-  });
+  document.getElementById("musicSwitchBtn").addEventListener("click", switchPlaylist);
 
   /* ===== 启动 ===== */
   var initialTheme = "light";
