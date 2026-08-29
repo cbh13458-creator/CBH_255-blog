@@ -597,7 +597,38 @@
     margin:0 auto;
   }
   .music-box__title{display:none}
-  .music-search{display:none}
+  /* 切换歌单按钮：播放器右上角小药丸 */
+  .music-search{
+    position:absolute;
+    top:8px;
+    right:8px;
+    z-index:10;
+  }
+  .music-search button{
+    background:rgba(0,0,0,.5);
+    color:#fff;
+    border:1px solid rgba(255,255,255,.15);
+    padding:3px 10px;
+    font-size:10px;
+    border-radius:10px;
+    cursor:pointer;
+    font-family:inherit;
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    letter-spacing:.05em;
+    white-space:nowrap;
+    transition:all .2s ease;
+  }
+  .music-search button:hover{background:rgba(0,0,0,.7)}
+  .music-search button:active{transform:scale(.93)}
+  .music-search button:disabled{opacity:.5;cursor:not-allowed}
+  /* 浅色模式：半透明白底黑字 */
+  html:not([data-theme="dark"]) .music-search button{
+    background:rgba(255,255,255,.75);
+    color:var(--ink);
+    border:1px solid rgba(0,0,0,.1);
+  }
+  html:not([data-theme="dark"]) .music-search button:hover{background:rgba(255,255,255,.95)}
   /* 页面底部留空，避免被播放器遮挡 */
   body{padding-bottom:90px}
   @media (max-width:640px){
@@ -647,29 +678,8 @@
     .aplayer .aplayer-info .aplayer-music .aplayer-author{font-size:10px !important}
     .aplayer .aplayer-list{max-height:180px !important}
     .aplayer .aplayer-list ol li{font-size:11px !important}
-    .music-box{padding:12px}
-    .music-box__title{font-size:10px;margin-bottom:8px}
-    .music-search button{padding:8px 12px;font-size:11px}
+    .music-box{padding:8px 12px}
   }
-  .music-search{
-    margin-top:10px;
-  }
-  .music-search button{
-    width:100%;
-    background:var(--ink);
-    color:var(--paper);
-    border:none;
-    padding:10px 16px;
-    font-size:12.5px;
-    border-radius:6px;
-    cursor:pointer;
-    font-family:inherit;
-    transition:opacity .2s;
-    letter-spacing:.1em;
-  }
-  .music-search button:hover{opacity:.75}
-  .music-search button:active{opacity:.5}
-  .music-search button:disabled{opacity:.5;cursor:not-allowed}
   /* 毛玻璃模式下播放器适配 */
   html.glass-mode .music-box{
     background:rgba(255,255,255,.08);
@@ -1317,6 +1327,9 @@
         listFolded: true,
         preload: "none"
       });
+      // 按钮显示当前歌单名
+      var btn = document.getElementById("musicSwitchBtn");
+      if(btn){ btn.textContent = playlists[0].name; }
     });
   }
   initMusicPlayer();
