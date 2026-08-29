@@ -578,6 +578,32 @@
     overflow:hidden;
     box-sizing:border-box;
   }
+  /* 音乐播放器固定在底部，跟随滚动 */
+  .music-box{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    z-index:60;
+    margin-top:0;
+    padding:10px 16px;
+    border-top:1px solid var(--line);
+    border-radius:0;
+    background:var(--paper);
+    box-shadow:0 -2px 12px rgba(0,0,0,.08);
+  }
+  .music-box .aplayer{
+    max-width:var(--maxw);
+    margin:0 auto;
+  }
+  .music-box__title{display:none}
+  .music-search{display:none}
+  /* 页面底部留空，避免被播放器遮挡 */
+  body{padding-bottom:90px}
+  @media (max-width:640px){
+    body{padding-bottom:80px}
+    .music-box{padding:8px 12px}
+  }
   .music-box__title{
     font-size:11px;
     color:var(--gray-light);
@@ -654,6 +680,21 @@
     padding:14px;
     border-top:none;
     margin-top:14px;
+  }
+  /* 毛玻璃模式下固定底部播放器 */
+  html.glass-mode .music-box{
+    background:rgba(20,20,26,.6);
+    backdrop-filter:blur(20px) saturate(160%);
+    -webkit-backdrop-filter:blur(20px) saturate(160%);
+    border-top:1px solid rgba(255,255,255,.1);
+    border-radius:0;
+    box-shadow:0 -2px 20px rgba(0,0,0,.3);
+  }
+  /* 浅色毛玻璃：固定底部播放器 */
+  html.glass-mode:not([data-theme="dark"]) .music-box{
+    background:rgba(255,255,255,.65);
+    border-top:1px solid rgba(0,0,0,.08);
+    box-shadow:0 -2px 20px rgba(0,0,0,.06);
   }
   /* 浅色毛玻璃：音乐盒半透明白+淡黑边框 */
   html.glass-mode:not([data-theme="dark"]) .music-box{
