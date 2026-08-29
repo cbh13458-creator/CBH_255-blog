@@ -602,7 +602,7 @@
     position:absolute;
     top:8px;
     right:8px;
-    z-index:10;
+    z-index:20;
   }
   .music-search button{
     background:rgba(0,0,0,.5);
@@ -1354,8 +1354,12 @@
       btn.disabled = false;
     });
   }
-  var musicSwitchBtnEl = document.getElementById("musicSwitchBtn");
-  if(musicSwitchBtnEl){ musicSwitchBtnEl.addEventListener("click", switchPlaylist); }
+  // 用事件委托绑定切换按钮（按钮在body末尾，script执行时可能还不存在）
+  document.addEventListener("click", function(e){
+    if(e.target && e.target.id === "musicSwitchBtn"){
+      switchPlaylist();
+    }
+  });
 
   /* ===== 启动 ===== */
   var initialTheme = "light";
