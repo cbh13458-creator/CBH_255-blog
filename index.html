@@ -1454,39 +1454,65 @@
     }
   });
 
-  /* ===== 音乐搜索（当前歌单内搜索） ===== */
-  var searchToggle = document.getElementById("musicSearchToggle");
-  var searchPanel = document.getElementById("musicSearchPanel");
-  var searchInput = document.getElementById("musicSearchInput");
-  var searchResults = document.getElementById("musicSearchResults");
+  /* ===== 音乐搜索（当前歌单内搜索）—— 全部用事件委托，因为播放器HTML在script之后 ===== */
   var searchPanelOpen = false;
 
+  function getSearchEls(){
+    return {
+      toggle: document.getElementById("musicSearchToggle"),
+      panel: document.getElementById("musicSearchPanel"),
+      input: document.getElementById("musicSearchInput"),
+      results: document.getElementById("musicSearchResults")
+    };
+  }
+
   function toggleSearchPanel(){
+    var els = getSearchEls();
+    if(!els.panel){ return; }
     searchPanelOpen = !searchPanelOpen;
-    searchPanel.classList.toggle("is-open", searchPanelOpen);
-    searchPanel.setAttribute("aria-hidden", !searchPanelOpen);
+    els.panel.classList.toggle("is-open", searchPanelOpen);
+    els.panel.setAttribute("aria-hidden", !searchPanelOpen);
     if(searchPanelOpen){
-      setTimeout(function(){ searchInput.focus(); }, 100);
-    } else {
-      searchInput.value = "";
-      searchResults.innerHTML = "";
+      setTimeout(function(){ if(els.input){ els.input.focus(); } }, 100);
+    } else if(els.input){
+      els.input.value = "";
+      if(els.results){ els.results.innerHTML = ""; }
     }
   }
-  if(searchToggle){ searchToggle.addEventListener("click", toggleSearchPanel); }
 
-  // 点击面板外关闭搜索
+  // 搜索按钮点击（事件委托）
   document.addEventListener("click", function(e){
-    if(searchPanelOpen && !searchPanel.contains(e.target) && e.target !== searchToggle && !searchToggle.contains(e.target)){
-      toggleSearchPanel();
+    var t = e.target;
+    while(t && t !== document){
+      if(t.id === "musicSearchToggle"){
+        toggleSearchPanel();
+        return;
+      }
+      t = t.parentNode;
     }
   });
 
-  // 搜索输入
-  if(searchInput){
-    searchInput.addEventListener("input", function(){
-      var kw = searchInput.value.trim().toLowerCase();
+  // 点击面板外关闭搜索
+  document.addEventListener("click", function(e){
+    if(!searchPanelOpen){ return; }
+    var els = getSearchEls();
+    if(!els.panel){ return; }
+    if(els.panel.contains(e.target)){ return; }
+    var t = e.target;
+    while(t && t !== document){
+      if(t.id === "musicSearchToggle"){ return; }
+      t = t.parentNode;
+    }
+    toggleSearchPanel();
+  });
+
+  // 搜索输入（事件委托）
+  document.addEventListener("input", function(e){
+    if(e.target && e.target.id === "musicSearchInput"){
+      var els = getSearchEls();
+      var kw = e.target.value.trim().toLowerCase();
       if(!kw || !musicPlayer){
-        searchResults.innerHTML = '<div class="search-empty">输入关键词搜索当前歌单</div>';
+        if(els.results){ els.results.innerHTML = '<div class="search-empty">输入关键词搜索当前歌单</div>'; }
         return;
       }
       var audios = musicPlayer.list.audios || [];
@@ -1495,25 +1521,43 @@
                (a.artist || "").toLowerCase().indexOf(kw) > -1;
       });
       if(matched.length === 0){
-        searchResults.innerHTML = '<div class="search-empty">没有找到相关歌曲</div>';
+        if(els.results){ els.results.innerHTML = '<div class="search-empty">没有找到相关歌曲</div>'; }
         return;
       }
-      searchResults.innerHTML = matched.map(function(a, i){
-        return '<div class="search-item" data-index="' + i + '">' +
-               '<span style="color:var(--gray);margin-right:8px">' + (i+1) + '</span>' +
-               esc(a.name) + '</div>';
-      }).join("");
-      // 绑定点击播放
-      Array.prototype.forEach.call(searchResults.querySelectorAll(".search-item"), function(item){
-        item.addEventListener("click", function(){
-          var idx = parseInt(item.getAttribute("data-index"), 10);
-          musicPlayer.list.switch(matched[idx]);
-          musicPlayer.play();
-          toggleSearchPanel();
-        });
-      });
-    });
-  }
+      if(els.results){
+        els.results.innerHTML = matched.map(function(a, i){
+          return '<div class="search-item" data-idx="' + i + '">' +
+                 '<span style="color:var(--gray);margin-right:8px">' + (i+1) + '</span>' +
+                 esc(a.name) + '</div>';
+        }).join("");
+      }
+    }
+  });
+
+  // 搜索结果点击播放（事件委托）
+  document.addEventListener("click", function(e){
+    var t = e.target;
+    while(t && t !== document){
+      if(t.classList && t.classList.contains("search-item")){
+        var idx = parseInt(t.getAttribute("data-idx"), 10);
+        var els = getSearchEls();
+        var kw = els.input ? els.input.value.trim().toLowerCase() : "";
+        if(musicPlayer && kw){
+          var matched = (musicPlayer.list.audios || []).filter(function(a){
+            return (a.name || "").toLowerCase().indexOf(kw) > -1 ||
+                   (a.artist || "").toLowerCase().indexOf(kw) > -1;
+          });
+          if(matched[idx]){
+            musicPlayer.list.switch(matched[idx]);
+            musicPlayer.play();
+            toggleSearchPanel();
+          }
+        }
+        return;
+      }
+      t = t.parentNode;
+    }
+  });
 
   /* ===== 启动 ===== */
   var initialTheme = "light";
