@@ -655,14 +655,40 @@
     border-top:none;
     margin-top:14px;
   }
+  /* 浅色毛玻璃：音乐盒半透明白+淡黑边框 */
+  html.glass-mode:not([data-theme="dark"]) .music-box{
+    background:rgba(255,255,255,.55);
+    border:1px solid rgba(0,0,0,.08);
+  }
   html.glass-mode .aplayer{
     background:rgba(255,255,255,.06) !important;
     border:1px solid rgba(255,255,255,.1) !important;
+  }
+  html.glass-mode:not([data-theme="dark"]) .aplayer{
+    background:rgba(255,255,255,.5) !important;
+    border:1px solid rgba(0,0,0,.08) !important;
   }
   html.glass-mode .aplayer .aplayer-body{background:transparent !important}
   html.glass-mode .music-search button{
     background:rgba(255,255,255,.15);
     color:#fff;
+  }
+  html.glass-mode:not([data-theme="dark"]) .music-search button{
+    background:rgba(0,0,0,.06);
+    color:var(--ink);
+  }
+  /* 浅色毛玻璃：雨滴淡灰蓝 */
+  html.glass-mode:not([data-theme="dark"]) .rain-layer{opacity:.35}
+  html.glass-mode:not([data-theme="dark"]) .rain-layer span{
+    background:linear-gradient(transparent, rgba(100,110,140,.4));
+  }
+  /* 浅色毛玻璃：水雾淡色 */
+  html.glass-mode:not([data-theme="dark"]) .mist-layer{opacity:.6}
+  /* 浅色毛玻璃：按钮文字用主题色 */
+  html.glass-mode:not([data-theme="dark"]) .profile__link,
+  html.glass-mode:not([data-theme="dark"]) .theme-toggle,
+  html.glass-mode:not([data-theme="dark"]) .glass-toggle:not(.is-active){
+    color:var(--ink);
   }
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
