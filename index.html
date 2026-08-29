@@ -459,6 +459,24 @@
   .post-nav a:hover{background:var(--wash)}
   .post-nav__label{font-size:12px;color:var(--gray);letter-spacing:.16em}
   .post-nav__title{font-family:var(--serif);font-weight:600;font-size:16px}
+  /* 留言板 */
+  .comments-section{
+    margin-top:48px;
+    padding-top:32px;
+    border-top:1px solid var(--line);
+  }
+  .comments-title{
+    font-family:var(--serif);
+    font-size:20px;
+    font-weight:700;
+    margin-bottom:20px;
+    letter-spacing:.08em;
+  }
+  #cusdis_thread{
+    --cusdis-bg:var(--paper);
+    --cusdis-text-color:var(--ink);
+    --cusdim-cursor-color:var(--ink);
+  }
   .post-nav__title.is-disabled{color:var(--gray-light)}
 
   /* 阅读进度 */
@@ -867,6 +885,35 @@
   "use strict";
 
   /* ===== 数据 ===== */
+  /* ===== Cusdis 留言板配置 ===== */
+  var CUSDIS_APP_ID = "YOUR_CUSDIS_APP_ID"; // 注册 cusdis.com 后替换
+  var cusdisLoaded = false;
+
+  function loadCusdis(){
+    if(CUSDIS_APP_ID === "YOUR_CUSDIS_APP_ID"){ return; } // 未配置则不加载
+    var thread = document.getElementById("cusdis_thread");
+    if(!thread){ return; }
+    if(!cusdisLoaded){
+      var s = document.createElement("script");
+      s.src = "https://cusdis.com/js/cusdis.es.js";
+      s.async = true;
+      s.defer = true;
+      s.onload = function(){ cusdisLoaded = true; if(window.CUSDIS){ window.CUSDIS.render(); } };
+      document.head.appendChild(s);
+    } else if(window.CUSDIS){
+      window.CUSDIS.render();
+    }
+  }
+
+  function updateCusdisTheme(){
+    var thread = document.getElementById("cusdis_thread");
+    if(thread){
+      var theme = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+      thread.setAttribute("data-theme", theme);
+      if(cusdisLoaded && window.CUSDIS){ window.CUSDIS.render(); }
+    }
+  }
+
   var posts = [
     {
       id: 1,
@@ -1056,7 +1103,14 @@
         (next
           ? '<a href="#/post?id=' + next.id + '"><span class="post-nav__label">下一篇</span><span class="post-nav__title">' + esc(next.title) + '</span></a>'
           : '<a href="#/home"><span class="post-nav__label">已经到头了</span><span class="post-nav__title">回到首页</span></a>') +
-      '</nav>';
+      '</nav>' +
+      '<div class="comments-section">' +
+        '<h3 class="comments-title">留言板</h3>' +
+        '<div id="cusdis_thread" data-host="https://cusdis.com" data-app-id="' + CUSDIS_APP_ID + '" data-page-id="post-' + post.id + '" data-page-url="' + encodeURIComponent(location.href) + '" data-page-title="' + esc(post.title) + '" data-theme="' + (document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light") + '"></div>' +
+      '</div>';
+
+    // 加载并渲染 Cusdis 留言板
+    loadCusdis();
   }
 
   /* ===== 渲染：关于 ===== */
@@ -1133,6 +1187,7 @@
   function applyTheme(theme){
     document.documentElement.setAttribute("data-theme", theme);
     try{ localStorage.setItem("cuixiangmi-theme", theme); }catch(e){}
+    if(typeof updateCusdisTheme === "function"){ updateCusdisTheme(); }
   }
   function toggleTheme(){
     var root = document.documentElement;
