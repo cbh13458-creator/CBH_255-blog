@@ -1307,10 +1307,16 @@
       .then(function(list){
         if(!list || !list.length){ if(cb) cb(null); return; }
         var audio = list.map(function(s){
+          // 从injahow URL提取歌曲ID，改用网易云外链直连（避免302重定向导致播放失败）
+          var songId = "";
+          if(s.url && s.url.indexOf("id=") > -1){
+            var m = s.url.match(/id=(\d+)/);
+            if(m){ songId = m[1]; }
+          }
           return {
             name: s.name || s.title,
             artist: s.artist || s.author,
-            url: s.url,
+            url: songId ? "https://music.163.com/song/media/outer/url?id=" + songId + ".mp3" : s.url,
             cover: s.pic,
             lrc: s.lrc
           };
