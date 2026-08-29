@@ -1341,7 +1341,8 @@
       btn.disabled = false;
     });
   }
-  document.getElementById("musicSwitchBtn").addEventListener("click", switchPlaylist);
+  var musicSwitchBtnEl = document.getElementById("musicSwitchBtn");
+  if(musicSwitchBtnEl){ musicSwitchBtnEl.addEventListener("click", switchPlaylist); }
 
   /* ===== 启动 ===== */
   var initialTheme = "light";
