@@ -629,6 +629,90 @@
     border:1px solid rgba(0,0,0,.1);
   }
   html:not([data-theme="dark"]) .music-search button:hover{background:rgba(255,255,255,.95)}
+  /* 搜索按钮：播放器左上角 */
+  .music-search-toggle{
+    position:absolute;
+    top:8px;
+    left:8px;
+    z-index:20;
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.15);
+    background:rgba(0,0,0,.5);
+    color:#fff;
+    cursor:pointer;
+    display:grid;
+    place-items:center;
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    transition:all .2s ease;
+  }
+  .music-search-toggle:hover{background:rgba(0,0,0,.7)}
+  .music-search-toggle:active{transform:scale(.93)}
+  html:not([data-theme="dark"]) .music-search-toggle{
+    background:rgba(255,255,255,.75);
+    color:var(--ink);
+    border:1px solid rgba(0,0,0,.1);
+  }
+  html:not([data-theme="dark"]) .music-search-toggle:hover{background:rgba(255,255,255,.95)}
+  /* 搜索面板 */
+  .music-search-panel{
+    position:absolute;
+    left:8px;
+    right:8px;
+    bottom:calc(100% + 6px);
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:10px;
+    box-shadow:0 -4px 20px rgba(0,0,0,.15);
+    overflow:hidden;
+    opacity:0;
+    transform:translateY(8px);
+    pointer-events:none;
+    transition:all .25s ease;
+    z-index:30;
+  }
+  .music-search-panel.is-open{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
+  .music-search-panel input{
+    width:100%;
+    box-sizing:border-box;
+    padding:10px 14px;
+    border:none;
+    border-bottom:1px solid var(--line);
+    background:transparent;
+    color:var(--ink);
+    font-size:13px;
+    font-family:inherit;
+    outline:none;
+  }
+  .music-search-panel input::placeholder{color:var(--gray)}
+  .music-search-results{
+    max-height:200px;
+    overflow-y:auto;
+  }
+  .music-search-results .search-item{
+    padding:8px 14px;
+    font-size:12px;
+    color:var(--ink-soft);
+    cursor:pointer;
+    border-bottom:1px solid var(--line);
+    transition:background .15s;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .music-search-results .search-item:hover{background:var(--line);color:var(--ink)}
+  .music-search-results .search-empty{
+    padding:14px;
+    text-align:center;
+    font-size:12px;
+    color:var(--gray);
+  }
   /* 页面底部留空，避免被播放器遮挡 */
   body{padding-bottom:90px}
   @media (max-width:640px){
@@ -1370,6 +1454,67 @@
     }
   });
 
+  /* ===== 音乐搜索（当前歌单内搜索） ===== */
+  var searchToggle = document.getElementById("musicSearchToggle");
+  var searchPanel = document.getElementById("musicSearchPanel");
+  var searchInput = document.getElementById("musicSearchInput");
+  var searchResults = document.getElementById("musicSearchResults");
+  var searchPanelOpen = false;
+
+  function toggleSearchPanel(){
+    searchPanelOpen = !searchPanelOpen;
+    searchPanel.classList.toggle("is-open", searchPanelOpen);
+    searchPanel.setAttribute("aria-hidden", !searchPanelOpen);
+    if(searchPanelOpen){
+      setTimeout(function(){ searchInput.focus(); }, 100);
+    } else {
+      searchInput.value = "";
+      searchResults.innerHTML = "";
+    }
+  }
+  if(searchToggle){ searchToggle.addEventListener("click", toggleSearchPanel); }
+
+  // 点击面板外关闭搜索
+  document.addEventListener("click", function(e){
+    if(searchPanelOpen && !searchPanel.contains(e.target) && e.target !== searchToggle && !searchToggle.contains(e.target)){
+      toggleSearchPanel();
+    }
+  });
+
+  // 搜索输入
+  if(searchInput){
+    searchInput.addEventListener("input", function(){
+      var kw = searchInput.value.trim().toLowerCase();
+      if(!kw || !musicPlayer){
+        searchResults.innerHTML = '<div class="search-empty">输入关键词搜索当前歌单</div>';
+        return;
+      }
+      var audios = musicPlayer.list.audios || [];
+      var matched = audios.filter(function(a){
+        return (a.name || "").toLowerCase().indexOf(kw) > -1 ||
+               (a.artist || "").toLowerCase().indexOf(kw) > -1;
+      });
+      if(matched.length === 0){
+        searchResults.innerHTML = '<div class="search-empty">没有找到相关歌曲</div>';
+        return;
+      }
+      searchResults.innerHTML = matched.map(function(a, i){
+        return '<div class="search-item" data-index="' + i + '">' +
+               '<span style="color:var(--gray);margin-right:8px">' + (i+1) + '</span>' +
+               esc(a.name) + '</div>';
+      }).join("");
+      // 绑定点击播放
+      Array.prototype.forEach.call(searchResults.querySelectorAll(".search-item"), function(item){
+        item.addEventListener("click", function(){
+          var idx = parseInt(item.getAttribute("data-index"), 10);
+          musicPlayer.list.switch(matched[idx]);
+          musicPlayer.play();
+          toggleSearchPanel();
+        });
+      });
+    });
+  }
+
   /* ===== 启动 ===== */
   var initialTheme = "light";
   try{
@@ -1386,6 +1531,15 @@
     <div class="aplayer" id="aplayer"></div>
     <div class="music-search">
       <button id="musicSwitchBtn" type="button">换一批</button>
+    </div>
+    <!-- 搜索按钮 -->
+    <button id="musicSearchToggle" class="music-search-toggle" type="button" aria-label="搜索歌曲">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </button>
+    <!-- 搜索面板 -->
+    <div class="music-search-panel" id="musicSearchPanel" aria-hidden="true">
+      <input type="text" id="musicSearchInput" placeholder="搜索当前歌单的歌曲..." autocomplete="off">
+      <div class="music-search-results" id="musicSearchResults"></div>
     </div>
   </div>
 </body>
