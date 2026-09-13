@@ -1017,7 +1017,6 @@
                 '<span class="group-cover__name">' + esc(post.group.name) + '</span>' +
                 '<span class="group-cover__tip">QQ 群 · ' + esc(post.group.number) + '</span>' +
               '</div>' +
-              '<div class="group-cover__qr"><img src="' + post.group.qrcode + '" alt="群二维码，扫码加入"></div>' +
             '</div></div>'
             : '<div class="post-item__media"><img src="' + post.image + '" alt="' + esc(post.alt) + '" loading="lazy"></div>') +
           '<div class="post-item__body">' +
@@ -1090,9 +1089,8 @@
           '<div class="group-card__info">' +
             '<span class="group-card__label">QQ 交流群 · ' + esc(post.group.name) + '</span>' +
             '<span class="group-card__number">' + esc(post.group.number) + '</span>' +
-            '<span class="group-card__tip">扫码或复制群号，进群一起聊</span>' +
+            '<span class="group-card__tip">复制群号，进群一起聊</span>' +
           '</div>' +
-          '<div class="group-card__qr"><img src="' + post.group.qrcode + '" alt="QQ 群二维码，群号 ' + esc(post.group.number) + '"></div>' +
         '</div></div>' : '') +
       '<div class="post-body">' + paras + '</div>' +
       '<div class="post-end"><span class="post-end__line"></span><span class="post-end__sign">— 脆香米</span><span class="post-end__line"></span></div>' +
