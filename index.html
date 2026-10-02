@@ -5,6 +5,67 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>脆香米 · 一个写字的地方</title>
 <meta name="description" content="脆香米——一个个人博客，安静写字的地方。">
+<link rel="canonical" href="https://cbh13458-creator.github.io/CBH_255-blog/">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d0d0d">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="脆香米">
+<meta property="og:title" content="脆香米 · 一个写字的地方">
+<meta property="og:description" content="脆香米——一个个人博客，安静写字的地方。没有广告，没有推荐算法，只有文字、图片，与愿意分享的日常与思考。">
+<meta property="og:url" content="https://cbh13458-creator.github.io/CBH_255-blog/">
+<meta property="og:image" content="https://cbh13458-creator.github.io/CBH_255-blog/avatar.jpg">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="脆香米 · 一个写字的地方">
+<meta name="twitter:description" content="脆香米——一个个人博客，安静写字的地方。">
+<meta name="twitter:image" content="https://cbh13458-creator.github.io/CBH_255-blog/avatar.jpg">
+<link rel="alternate" type="application/rss+xml" title="脆香米 · RSS 订阅" href="rss.xml">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "name": "脆香米",
+      "url": "https://cbh13458-creator.github.io/CBH_255-blog/",
+      "description": "一个个人博客，安静写字的地方。",
+      "inLanguage": "zh-CN"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "第一篇文章",
+      "datePublished": "2026-08-21",
+      "image": "https://cbh13458-creator.github.io/CBH_255-blog/images/post-notebook.jpg",
+      "url": "https://cbh13458-creator.github.io/CBH_255-blog/#/post?id=1",
+      "description": "这里原本只是一块空地。和大多数人一样，我在很多地方留下过只言片语……后来我想，也许该有一个只属于自己的地方。",
+      "author": {"@type": "Person", "name": "脆香米"},
+      "inLanguage": "zh-CN"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "加入交流群 · 阿尔卑斯要塞",
+      "datePublished": "2026-08-27",
+      "image": "https://cbh13458-creator.github.io/CBH_255-blog/group-card.jpg",
+      "url": "https://cbh13458-creator.github.io/CBH_255-blog/#/post?id=2",
+      "description": "建了个 QQ 群「脆香米の阿尔卑斯要塞」，群号 1098616164。想交流的，扫码或复制群号进来聊。",
+      "author": {"@type": "Person", "name": "脆香米"},
+      "inLanguage": "zh-CN"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "光与影的练习",
+      "datePublished": "2026-08-28",
+      "image": "https://cbh13458-creator.github.io/CBH_255-blog/images/post-window.jpg",
+      "url": "https://cbh13458-creator.github.io/CBH_255-blog/#/post?id=3",
+      "description": "这个网站只有黑白两色。不是因为懒得选颜色，而是觉得太多颜色会让人分心。黑和白之间，其实有无限的灰。",
+      "author": {"@type": "Person", "name": "脆香米"},
+      "inLanguage": "zh-CN"
+    }
+  ]
+}
+</script>
 <link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap">
 <style>
@@ -446,6 +507,49 @@
   }
   .post-end__line{flex:1;height:1px;background:var(--line)}
   .post-end__sign{font-family:var(--serif);font-weight:700;font-size:15px;letter-spacing:.2em;color:var(--gray)}
+
+  /* ===== 归档 ===== */
+  .archive{padding:56px 0 96px}
+  .archive__head{
+    display:flex;align-items:baseline;gap:16px;margin-bottom:30px;
+    border-bottom:1px solid var(--ink);padding-bottom:18px;
+  }
+  .archive__count{font-size:13px;color:var(--gray);letter-spacing:.1em}
+  .archive__group{margin-bottom:34px}
+  .archive__group-title{
+    font-family:var(--serif);font-weight:700;font-size:16px;letter-spacing:.18em;
+    color:var(--gray);margin-bottom:10px;
+  }
+  .archive__list{border-top:1px solid var(--line)}
+  .archive__item{
+    display:flex;align-items:baseline;gap:24px;
+    padding:16px 4px;border-bottom:1px solid var(--line);
+    transition:background-color .3s ease, padding-left .3s ease;
+  }
+  .archive__item:hover{background:var(--wash);padding-left:12px}
+  .archive__item-time{flex:none;font-size:13px;color:var(--gray);letter-spacing:.08em;font-variant-numeric:tabular-nums}
+  .archive__item-title{font-family:var(--serif);font-weight:600;font-size:17px}
+  .archive__item-tag{
+    flex:none;font-size:11px;color:var(--gray);letter-spacing:.14em;
+    border:1px solid var(--line);border-radius:99px;padding:2px 10px;
+  }
+
+  /* ===== 回到顶部 ===== */
+  .back-top{
+    position:fixed;right:22px;bottom:118px;z-index:55;
+    width:44px;height:44px;border-radius:50%;
+    display:grid;place-items:center;
+    background:var(--paper);border:1px solid var(--ink);color:var(--ink);
+    cursor:pointer;opacity:0;pointer-events:none;transform:translateY(8px);
+    transition:opacity .3s ease, transform .3s ease, background-color .45s ease, border-color .45s ease;
+  }
+  .back-top.is-visible{opacity:1;pointer-events:auto;transform:translateY(0)}
+  .back-top:hover{background:var(--wash)}
+  @media (max-width:640px){
+    .back-top{bottom:128px;right:16px}
+    .archive__item{gap:14px}
+    .archive__item-tag{display:none}
+  }
   .post-nav{
     border-top:1px solid var(--ink);
     display:grid;grid-template-columns:1fr 1fr;max-width:var(--maxw);margin:0 auto;
@@ -786,6 +890,7 @@
       </button>
       <nav class="site-nav" aria-label="主导航">
         <a href="#/home" data-nav="home">首页</a>
+        <a href="#/archive" data-nav="archive">归档</a>
         <a href="#/about" data-nav="about">关于</a>
       </nav>
       <button class="hamburger" id="hamburger" aria-label="打开菜单"><span></span></button>
@@ -795,7 +900,8 @@
 
 <div class="mobile-menu" id="mobileMenu">
   <a href="#/home"><span class="idx">01</span>首页</a>
-  <a href="#/about"><span class="idx">02</span>关于</a>
+  <a href="#/archive"><span class="idx">02</span>归档</a>
+  <a href="#/about"><span class="idx">03</span>关于</a>
 </div>
 
 <main class="page">
@@ -843,7 +949,7 @@
     <div class="wrap">
       <div class="about">
         <div class="about__media">
-          <img src="https://aka.doubaocdn.com/s/UUDo8obcxu" alt="一张书桌的黑白照片，摊开的书与茶杯">
+          <img src="images/about-desk.jpg" alt="一张书桌的黑白照片，摊开的书与茶杯">
         </div>
         <div>
           <div class="about__head">
@@ -857,6 +963,19 @@
             <span><b>频率</b>　想写的时候写，不想写的时候不写</span>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 归档 ===== -->
+  <section class="view" data-route="archive">
+    <div class="wrap">
+      <div class="archive">
+        <div class="archive__head">
+          <h2 class="about__title">归档</h2>
+          <span class="archive__count" id="archiveCount"></span>
+        </div>
+        <div id="archiveList"></div>
       </div>
     </div>
   </section>
@@ -920,7 +1039,7 @@
       title: "第一篇文章",
       date: "2026.08.21",
       tag: "开篇",
-      image: "https://aka.doubaocdn.com/s/46UV4T0VFb",
+      image: "images/post-notebook.jpg",
       alt: "一张书桌的黑白照片，摊开的笔记本与钢笔",
       excerpt: "这里原本只是一块空地。和大多数人一样，我在很多地方留下过只言片语——聊天框、备忘录、社交动态，它们像随手写下的便签，贴在时间的墙上，过几天就忘了翻看。",
       content: [
@@ -955,7 +1074,7 @@
       title: "光与影的练习",
       date: "2026.08.28",
       tag: "随笔",
-      image: "https://aka.doubaocdn.com/s/PhDrWm22RD",
+      image: "images/post-window.jpg",
       alt: "黑白照片，一扇旧木窗，午后阳光在地板上投下窗格的影子",
       excerpt: "这个网站只有黑白两色。不是因为懒得选颜色，而是觉得太多颜色会让人分心。黑和白之间，其实有无限的灰。",
       content: [
@@ -1116,6 +1235,36 @@
     aboutBody.innerHTML = aboutText.map(function(p){ return "<p>" + esc(p) + "</p>"; }).join("");
   }
 
+  /* ===== 渲染：归档 ===== */
+  function renderArchive(){
+    var groups = {};
+    posts.forEach(function(post){
+      var tag = post.tag || "未分类";
+      (groups[tag] = groups[tag] || []).push(post);
+    });
+    var tags = Object.keys(groups).sort();
+    var html = tags.map(function(tag){
+      return (
+        '<div class="archive__group">' +
+          '<h3 class="archive__group-title">' + esc(tag) + '</h3>' +
+          '<div class="archive__list">' +
+          groups[tag].map(function(post){
+            return (
+              '<a class="archive__item" href="#/post?id=' + post.id + '">' +
+                '<span class="archive__item-time">' + esc(post.date) + '</span>' +
+                '<span class="archive__item-title">' + esc(post.title) + '</span>' +
+                '<span class="archive__item-tag">' + esc(post.tag) + '</span>' +
+              '</a>'
+            );
+          }).join("") +
+          '</div>' +
+        '</div>'
+      );
+    }).join("");
+    document.getElementById("archiveList").innerHTML = html;
+    document.getElementById("archiveCount").textContent = "共 " + posts.length + " 篇";
+  }
+
   /* ===== 路由 ===== */
   function parseHash(){
     var raw = (location.hash || "").replace(/^#\/?/, "") || "home";
@@ -1126,7 +1275,7 @@
     };
   }
 
-  var routeNames = { "home":"首页", "post":"文章", "about":"关于" };
+  var routeNames = { "home":"首页", "archive":"归档", "post":"文章", "about":"关于" };
 
   function route(){
     var r = parseHash();
@@ -1137,6 +1286,7 @@
     target.classList.add("is-active");
 
     if(r.path === "post"){ renderPost(r.params); }
+    else if(r.path === "archive"){ renderArchive(); }
     else if(r.path === "about"){ renderAbout(); }
     else { renderHome(); startTypewriter(); }
 
@@ -1162,8 +1312,22 @@
     var max = h.scrollHeight - h.clientHeight;
     var pct = max > 0 ? (scrollTop / max) * 100 : 0;
     progress.style.width = pct + "%";
+
+    // 回到顶部按钮显隐
+    var backTop = document.getElementById("backTop");
+    if(backTop){
+      backTop.classList.toggle("is-visible", scrollTop > 320);
+    }
   }
   window.addEventListener("scroll", updateProgress, {passive:true});
+
+  /* ===== 回到顶部 ===== */
+  var backTop = document.getElementById("backTop");
+  if(backTop){
+    backTop.addEventListener("click", function(){
+      window.scrollTo({ top:0, behavior:"smooth" });
+    });
+  }
 
   /* ===== 移动端菜单 ===== */
   function toggleMenu(){
@@ -1433,6 +1597,10 @@
   route();
 })();
 </script>
+  <!-- 回到顶部 -->
+  <button class="back-top" id="backTop" aria-label="回到顶部">
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
   <!-- 固定底部音乐播放器（移出侧边栏，避免父元素backdrop-filter影响fixed定位） -->
   <div class="music-box">
     <div class="music-box__title">正在播放</div>

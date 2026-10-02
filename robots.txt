@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cbh13458-creator.github.io/CBH_255-blog/sitemap.xml

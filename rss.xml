@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>脆香米 · 一个写字的地方</title>
+  <link>https://cbh13458-creator.github.io/CBH_255-blog/</link>
+  <description>一个个人博客，安静写字的地方。没有广告，没有推荐算法，只有文字、图片，与愿意分享的日常与思考。</description>
+  <language>zh-CN</language>
+  <lastBuildDate>Fri, 28 Aug 2026 09:00:00 +0800</lastBuildDate>
+  <atom:link href="https://cbh13458-creator.github.io/CBH_255-blog/rss.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>光与影的练习</title>
+    <link>https://cbh13458-creator.github.io/CBH_255-blog/#/post?id=3</link>
+    <guid>https://cbh13458-creator.github.io/CBH_255-blog/#/post?id=3</guid>
+    <pubDate>Fri, 28 Aug 2026 09:00:00 +0800</pubDate>
+    <description>这个网站只有黑白两色。不是因为懒得选颜色，而是觉得太多颜色会让人分心。黑和白之间，其实有无限的灰。</description>
+  </item>
+  <item>
+    <title>加入交流群 · 阿尔卑斯要塞</title>
+    <link>https://cbh13458-creator.github.io/CBH_255-blog/#/post?id=2</link>
+    <guid>https://cbh13458-creator.github.io/CBH_255-blog/#/post?id=2</guid>
+    <pubDate>Thu, 27 Aug 2026 09:00:00 +0800</pubDate>
+    <description>建了个 QQ 群「脆香米の阿尔卑斯要塞」，群号 1098616164。想交流的，扫码或复制群号进来聊。</description>
+  </item>
+  <item>
+    <title>第一篇文章</title>
+    <link>https://cbh13458-creator.github.io/CBH_255-blog/#/post?id=1</link>
+    <guid>https://cbh13458-creator.github.io/CBH_255-blog/#/post?id=1</guid>
+    <pubDate>Fri, 21 Aug 2026 09:00:00 +0800</pubDate>
+    <description>这里原本只是一块空地。和大多数人一样，我在很多地方留下过只言片语——聊天框、备忘录、社交动态，它们像随手写下的便签，贴在时间的墙上，过几天就忘了翻看。</description>
+  </item>
+</channel>
+</rss>
