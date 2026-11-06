@@ -1746,6 +1746,12 @@
     else { renderHome(); startTypewriter(); }
 
     document.title = "脆香米 · " + (routeNames[r.path] || "一个写字的地方");
+    if(r.path === "post"){
+      var pid = parseInt(r.params.get("id"), 10);
+      for(var pi = 0; pi < posts.length; pi++){
+        if(posts[pi].id === pid){ document.title = posts[pi].title + " · 脆香米"; break; }
+      }
+    }
 
     // 高亮导航
     var active = routeNames[r.path] || "首页";
