@@ -1139,6 +1139,13 @@
   var CUSDIS_APP_ID = "e5519702-db87-468a-9a7e-cf8f55133671";
   var cusdisLoaded = false;
 
+  // Cusdis 脚本会按 data-* 属性自动渲染；只有存在 render 方法时才手动刷新
+  function cusdisRender(){
+    if(window.CUSDIS && typeof window.CUSDIS.render === "function"){
+      try{ window.CUSDIS.render(); }catch(e){}
+    }
+  }
+
   function loadCusdis(){
     if(CUSDIS_APP_ID === "YOUR_CUSDIS_APP_ID"){ return; } // 未配置则不加载
     var thread = document.getElementById("cusdis_thread");
@@ -1148,10 +1155,10 @@
       s.src = "https://cusdis.com/js/cusdis.es.js";
       s.async = true;
       s.defer = true;
-      s.onload = function(){ cusdisLoaded = true; if(window.CUSDIS){ window.CUSDIS.render(); } };
+      s.onload = function(){ cusdisLoaded = true; cusdisRender(); };
       document.head.appendChild(s);
-    } else if(window.CUSDIS){
-      window.CUSDIS.render();
+    } else {
+      cusdisRender();
     }
   }
 
@@ -1160,7 +1167,7 @@
     if(thread){
       var theme = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
       thread.setAttribute("data-theme", theme);
-      if(cusdisLoaded && window.CUSDIS){ window.CUSDIS.render(); }
+      if(cusdisLoaded){ cusdisRender(); }
     }
   }
 
