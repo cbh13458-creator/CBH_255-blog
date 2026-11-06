@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" role="img" aria-label="黑白插画：一部手机屏幕上同时运行着 QQ 与微信两个机器人">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="40%" r="78%">
+      <stop offset="0%" stop-color="#1d1d1d"/>
+      <stop offset="100%" stop-color="#070707"/>
+    </radialGradient>
+    <linearGradient id="screen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#191919"/>
+      <stop offset="100%" stop-color="#111111"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="960" height="600" fill="url(#bg)"/>
+
+  <g stroke="#ffffff" stroke-opacity="0.035" stroke-width="1">
+    <path d="M60 0v600M120 0v600M180 0v600M240 0v600M300 0v600M360 0v600M420 0v600M480 0v600M540 0v600M600 0v600M660 0v600M720 0v600M780 0v600M840 0v600M900 0v600"/>
+    <path d="M0 60h960M0 120h960M0 180h960M0 240h960M0 300h960M0 360h960M0 420h960M0 480h960M0 540h960"/>
+  </g>
+
+  <g fill="none" stroke="#f2f2f2">
+    <circle cx="480" cy="300" r="252" stroke-opacity="0.06"/>
+    <circle cx="480" cy="300" r="318" stroke-opacity="0.035"/>
+  </g>
+
+  <g>
+    <rect x="330" y="66" width="300" height="468" rx="42" fill="#101010" stroke="#ededed" stroke-width="2"/>
+    <rect x="344" y="80" width="272" height="440" rx="30" fill="url(#screen)" stroke="#2c2c2c" stroke-width="1"/>
+    <rect x="438" y="92" width="84" height="9" rx="4.5" fill="#2b2b2b"/>
+
+    <text x="370" y="142" fill="#8a8a8a" font-family="Arial, Helvetica, sans-serif" font-size="12" letter-spacing="4">QQ</text>
+    <circle cx="588" cy="138" r="4" fill="#f2f2f2"/>
+
+    <rect x="368" y="160" width="152" height="34" rx="17" fill="#f2f2f2"/>
+    <rect x="384" y="172" width="88" height="3" rx="1.5" fill="#161616"/>
+    <rect x="384" y="182" width="114" height="3" rx="1.5" fill="#4c4c4c"/>
+
+    <rect x="452" y="206" width="140" height="34" rx="17" fill="none" stroke="#5a5a5a" stroke-width="1"/>
+    <rect x="468" y="218" width="98" height="3" rx="1.5" fill="#7a7a7a"/>
+    <rect x="468" y="228" width="64" height="3" rx="1.5" fill="#7a7a7a"/>
+
+    <rect x="368" y="254" width="104" height="28" rx="14" fill="none" stroke="#3a3a3a" stroke-width="1"/>
+    <text x="386" y="272" fill="#9a9a9a" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="11" letter-spacing="1.5">+10 签到</text>
+
+    <line x1="368" y1="304" x2="592" y2="304" stroke="#2a2a2a"/>
+
+    <text x="370" y="336" fill="#8a8a8a" font-family="Arial, Helvetica, sans-serif" font-size="12" letter-spacing="2.5">WECHAT</text>
+    <circle cx="588" cy="332" r="4" fill="#f2f2f2"/>
+
+    <rect x="452" y="354" width="140" height="34" rx="17" fill="#f2f2f2"/>
+    <rect x="468" y="366" width="88" height="3" rx="1.5" fill="#161616"/>
+    <rect x="468" y="376" width="106" height="3" rx="1.5" fill="#4c4c4c"/>
+
+    <rect x="368" y="400" width="152" height="34" rx="17" fill="none" stroke="#5a5a5a" stroke-width="1"/>
+    <rect x="384" y="412" width="102" height="3" rx="1.5" fill="#7a7a7a"/>
+    <rect x="384" y="422" width="62" height="3" rx="1.5" fill="#7a7a7a"/>
+
+    <g fill="#5f5f5f">
+      <circle cx="384" cy="466" r="3.2"/>
+      <circle cx="396" cy="466" r="3.2"/>
+      <circle cx="408" cy="466" r="3.2"/>
+    </g>
+    <text x="368" y="504" fill="#4f4f4f" font-family="Arial, Helvetica, sans-serif" font-size="9" letter-spacing="3">TERMUX · ONLINE</text>
+  </g>
+
+  <text x="88" y="536" fill="#a3a3a3" font-family="Arial, Helvetica, sans-serif" font-size="13" letter-spacing="6">TWO BOTS · ONE PHONE</text>
+  <text x="88" y="562" fill="#4a4a4a" font-family="Arial, Helvetica, sans-serif" font-size="10" letter-spacing="3">QQ BOT × WECHAT LOBSTER</text>
+</svg>

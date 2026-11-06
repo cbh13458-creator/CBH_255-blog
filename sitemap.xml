@@ -2,15 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://cbh13458-creator.github.io/CBH_255-blog/</loc>
-    <lastmod>2026-08-28</lastmod>
+    <lastmod>2026-11-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://cbh13458-creator.github.io/CBH_255-blog/#/archive</loc>
-    <lastmod>2026-08-28</lastmod>
+    <lastmod>2026-11-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://cbh13458-creator.github.io/CBH_255-blog/#/calendar</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://cbh13458-creator.github.io/CBH_255-blog/#/about</loc>
@@ -33,6 +39,12 @@
   <url>
     <loc>https://cbh13458-creator.github.io/CBH_255-blog/#/post?id=3</loc>
     <lastmod>2026-08-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://cbh13458-creator.github.io/CBH_255-blog/#/post?id=4</loc>
+    <lastmod>2026-11-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
