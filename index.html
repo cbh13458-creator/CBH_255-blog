@@ -211,8 +211,8 @@
   html.glass-mode .site-header{
     z-index:50;
     background:rgba(255,255,255,.55);
-    backdrop-filter:blur(16px) saturate(160%);
-    -webkit-backdrop-filter:blur(16px) saturate(160%);
+    backdrop-filter:blur(10px) saturate(160%);
+    -webkit-backdrop-filter:blur(10px) saturate(160%);
     border-bottom:1px solid rgba(0,0,0,.08);
   }
   html.glass-mode[data-theme="dark"] .site-header{
@@ -223,8 +223,8 @@
   html.glass-mode .post-item,
   html.glass-mode .group-card__inner{
     background:rgba(255,255,255,.45);
-    backdrop-filter:blur(12px) saturate(150%);
-    -webkit-backdrop-filter:blur(12px) saturate(150%);
+    backdrop-filter:blur(8px) saturate(150%);
+    -webkit-backdrop-filter:blur(8px) saturate(150%);
     border-color:rgba(0,0,0,.10);
   }
   html.glass-mode[data-theme="dark"] .profile,
@@ -821,8 +821,8 @@
   /* 毛玻璃模式下固定底部播放器 */
   html.glass-mode .music-box{
     background:rgba(20,20,26,.6);
-    backdrop-filter:blur(20px) saturate(160%);
-    -webkit-backdrop-filter:blur(20px) saturate(160%);
+    backdrop-filter:blur(12px) saturate(160%);
+    -webkit-backdrop-filter:blur(12px) saturate(160%);
     border-top:1px solid rgba(255,255,255,.1);
     border-radius:0;
     box-shadow:0 -2px 20px rgba(0,0,0,.3);
@@ -871,11 +871,11 @@
   /* ===== 交互增强 ===== */
   :root{ --ease-out:cubic-bezier(.2,.7,.2,1); }
 
-  /* 页面切换：淡入 + 轻微上浮 + 去模糊 */
-  .view.is-active{animation:view-in .55s var(--ease-out) both}
+  /* 页面切换：淡入 + 轻微上浮（不用 blur，低端机动画模糊会卡） */
+  .view.is-active{animation:view-in .45s var(--ease-out) both}
   @keyframes view-in{
-    from{opacity:0;transform:translateY(14px);filter:blur(6px)}
-    to{opacity:1;transform:none;filter:none}
+    from{opacity:0;transform:translateY(14px)}
+    to{opacity:1;transform:none}
   }
 
   /* 滚动进入 */
@@ -1881,7 +1881,7 @@
 
   function buildRain(){
     if(rainLayer.children.length > 0){ return; }
-    for(var i=0;i<90;i++){
+    for(var i=0;i<40;i++){
       var drop = document.createElement("span");
       drop.style.left = (Math.random()*100) + "%";
       drop.style.height = (40 + Math.random()*80) + "px";
@@ -1896,7 +1896,7 @@
     document.documentElement.classList.toggle("glass-mode", on);
     glassToggle.classList.toggle("is-active", on);
     glassToggle.setAttribute("aria-pressed", on ? "true" : "false");
-    if(on){ buildRain(); }
+    if(on && !reduceMotion){ buildRain(); }
   }
 
   function toggleGlassMode(){
